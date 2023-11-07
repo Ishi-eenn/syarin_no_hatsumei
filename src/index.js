@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';
-import { Main } from './componets/pages/main';
+import { Main } from './main';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
