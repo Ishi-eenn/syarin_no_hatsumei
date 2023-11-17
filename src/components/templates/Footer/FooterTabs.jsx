@@ -35,7 +35,7 @@ export const FooterTabs = () => {
 
   return (
     <>
-        <TabBar onChange={value => changeHandler(value)} style={{ width:'100%', bottom:0, backgroundColor:'orange', position:'absolute', borderTopLeftRadius: '10px', borderTopRightRadius:'10px'}} >
+        <TabBar onChange={value => changeHandler(value)} style={{ width:'100%', position:'sticky', bottom:0, backgroundColor:'orange', borderTopLeftRadius: '10px', borderTopRightRadius:'10px'}} >
             {tabs.map(item => (
                 <TabBar.Item key={item.key} icon={item.icon} title={item.title}/>
             ))}

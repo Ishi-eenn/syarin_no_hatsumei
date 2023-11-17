@@ -1,6 +1,11 @@
+import { Tag } from "antd-mobile"
+import { BookLists } from "../templates/BookLists"
 
 export const ListPage = () => {
   return (
-    <div>ListPage</div>
+    <>
+        <Tag fill='outline' >本リスト</Tag>
+        <BookLists />
+    </>
   )
 }

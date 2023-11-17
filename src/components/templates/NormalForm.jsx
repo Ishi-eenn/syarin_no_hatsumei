@@ -1,4 +1,4 @@
-import { Form, Input, Button } from "antd-mobile"
+import { Form, Input, Button, Radio } from "antd-mobile"
 
 export const NormalForm = () => {
 
@@ -25,6 +25,10 @@ export const NormalForm = () => {
   return (
     <Form footer={ <Button block type='submit' color='primary' size='large' >追加</Button> }>
       <Form.Header>本棚追加</Form.Header>
+      <Radio.Group defaultValue='cm'>
+        <Radio value='cm'>cm</Radio>
+        <Radio value='mm'>mm</Radio>
+      </Radio.Group>
       {inputs.map( (item) => (
         <Form.Item label={ item.label } key={item.label}>
           <Input placeholder={ item.placeHolder } />
