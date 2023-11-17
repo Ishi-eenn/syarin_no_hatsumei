@@ -1,6 +1,11 @@
+import { BookShelf } from "../templates/BookShelf"
+import { ListTabs } from "../templates/ListTabs"
 
 export const Top = () => {
   return (
-    <div>Top</div>
+    <>
+      <ListTabs />
+      <BookShelf />
+    </>
   )
 }
