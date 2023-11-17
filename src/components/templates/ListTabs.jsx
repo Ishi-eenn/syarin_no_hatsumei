@@ -1,4 +1,6 @@
-import { Tabs } from "antd-mobile"
+import { Button, Modal, Tabs } from "antd-mobile"
+import { AddOutline } from 'antd-mobile-icons'
+import { NormalForm } from "./NormalForm"
 
 
 export const ListTabs = () => {
@@ -14,11 +16,22 @@ export const ListTabs = () => {
         }
     ]
 
+    
+
     return (
-        <Tabs defaultActiveKey='1'>
-            {tabs.map( (item) => (
-                <Tabs.Tab title={item.title} key={item.key} />
-            ))}
-        </Tabs>
+        <div style={{ display:"flex", gap:'6px 4px'}}>
+            <Tabs defaultActiveKey='1' style={{ flex:1 }}>
+                {tabs.map( (item) => (
+                    <Tabs.Tab title={item.title} key={item.key} />
+                ))}
+            </Tabs>
+            <Button style={{ padding:'10px', border:'none' }} onClick={ () => Modal.show({
+                closeOnMaskClick: true,
+                showCloseButton: true,
+                content: <NormalForm/>
+            })}>
+                <AddOutline />
+            </Button>
+        </div>
     )
 }

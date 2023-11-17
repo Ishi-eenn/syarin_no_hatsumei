@@ -5,7 +5,6 @@ import {
     ContentOutline
   } from 'antd-mobile-icons'
 import { useNavigate } from 'react-router-dom'
-import './styles.css';
 
 export const FooterTabs = () => {
 
@@ -35,12 +34,12 @@ export const FooterTabs = () => {
 
 
   return (
-    <div className='container'>
-        <TabBar onChange={value => changeHandler(value)} style={{ height:20 }}>
+    <>
+        <TabBar onChange={value => changeHandler(value)} style={{ width:'100%', bottom:0, backgroundColor:'orange', position:'absolute', borderTopLeftRadius: '10px', borderTopRightRadius:'10px'}} >
             {tabs.map(item => (
                 <TabBar.Item key={item.key} icon={item.icon} title={item.title}/>
             ))}
         </TabBar>
-    </div>
+    </>
   )
 }
