@@ -38,7 +38,6 @@ export const ListTabs = () => {
             });
     }
     
-    console.log(shelves)
 
     return (
         <div style={{ display:"flex", gap:'6px 4px'}}>
@@ -48,8 +47,9 @@ export const ListTabs = () => {
                 ))}
             </Tabs>
             <Button style={{ padding:'10px', border:'none' }} onClick={ () => Modal.confirm({
+                cancelText: '取り消し' ,
+                confirmText: '追加' ,
                 closeOnMaskClick: true,
-                showCloseButton: true,
                 content: <NormalForm form={ form } />,
                 onConfirm: () => {
                     changeHandler()
