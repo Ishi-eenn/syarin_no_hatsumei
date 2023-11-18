@@ -4,9 +4,10 @@ import { useState } from 'react'
 export const BookLists = () => {
 
     const [books, setBooks] = 
-        useState(['進撃の巨人', 'ワンピース', '情報可視化入門', 
-                    'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 
-                    'I', 'J', 'K', 'L', 'M', 'N', 'O','P', 'Q', 'R', 'S', 'T', 'U' ])
+        useState(['進撃の巨人', 'ワンピース', '情報可視化入門',
+        'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 
+        'I', 'J', 'K', 'L', 'M', 'N', 'O','P', 'Q', 'R', 'S', 'T', 'U'
+       ])
 
     const rightActions = [{ key:'delete', text:'削除', color:'danger'}]
 

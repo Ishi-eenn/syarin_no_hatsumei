@@ -1,21 +1,33 @@
-import { Form, Input, Button, Radio } from "antd-mobile"
+import { Form, Input, Radio } from "antd-mobile"
 
-export const NormalForm = () => {
+export const NormalForm = (props) => {
+
+    const { form } = props;
+
 
   const inputs = [
     {
+      name: 'title',
+      label: '本棚の名前',
+      placeHolder: ''
+    },
+    {
+      name: 'h',
       label:'縦',
       placeHolder:'5cm'
     },
     {
+      name: 'w',
       label: '横',
       placeHolder: '10cm'
     },
     {
+      name: 'boards',
       label: '板の枚数',
       placeHolder: '2枚'
     },
     {
+      name: 'roomH',
       label:'板間の長さ',
       placeHolder: '2cm'
     }
@@ -23,14 +35,16 @@ export const NormalForm = () => {
 
 
   return (
-    <Form footer={ <Button block type='submit' color='primary' size='large' >追加</Button> }>
+    <Form form={form} >
       <Form.Header>本棚追加</Form.Header>
-      <Radio.Group defaultValue='cm'>
-        <Radio value='cm'>cm</Radio>
-        <Radio value='mm'>mm</Radio>
-      </Radio.Group>
+      <Form.Item name='unit' initialValue='cm'>
+        <Radio.Group>
+          <Radio value='cm' name='cm'>cm</Radio>
+          <Radio value='mm' name='mm'>mm</Radio>
+        </Radio.Group>
+      </Form.Item>
       {inputs.map( (item) => (
-        <Form.Item label={ item.label } key={item.label}>
+        <Form.Item name={ item.name } label={ item.label } key={ item.label }>
           <Input placeholder={ item.placeHolder } />
         </Form.Item>
       ))}
