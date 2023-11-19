@@ -1,4 +1,4 @@
-import { TabBar } from 'antd-mobile'
+import { SafeArea, TabBar } from 'antd-mobile'
 import {
     AppOutline,
     AddOutline,
@@ -35,6 +35,7 @@ export const FooterTabs = () => {
 
   return (
     <>
+        <SafeArea position='bottom' style={{ height:'7vh' }} />
         <TabBar onChange={value => changeHandler(value)} style={{ width:'100%', height: '7vh' ,position:'fixed', bottom:0, backgroundColor:'orange', borderTopLeftRadius: '10px', borderTopRightRadius:'10px'}} >
             {tabs.map(item => (
                 <TabBar.Item key={item.key} icon={item.icon} title={item.title}/>
