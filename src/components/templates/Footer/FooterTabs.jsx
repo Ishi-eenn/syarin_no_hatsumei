@@ -1,11 +1,10 @@
-import { TabBar } from 'antd-mobile'
+import { SafeArea, TabBar } from 'antd-mobile'
 import {
     AppOutline,
     AddOutline,
     ContentOutline
   } from 'antd-mobile-icons'
 import { useNavigate } from 'react-router-dom'
-import './styles.css';
 
 export const FooterTabs = () => {
 
@@ -35,12 +34,13 @@ export const FooterTabs = () => {
 
 
   return (
-    <div className='container'>
-        <TabBar onChange={value => changeHandler(value)} style={{ height:20 }}>
+    <>
+        <SafeArea position='bottom' style={{ height:'7vh' }} />
+        <TabBar onChange={value => changeHandler(value)} style={{ width:'100%', height: '7vh' ,position:'fixed', bottom:0, backgroundColor:'orange', borderTopLeftRadius: '10px', borderTopRightRadius:'10px'}} >
             {tabs.map(item => (
                 <TabBar.Item key={item.key} icon={item.icon} title={item.title}/>
             ))}
         </TabBar>
-    </div>
+    </>
   )
 }

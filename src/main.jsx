@@ -9,9 +9,9 @@ import { SafeArea } from 'antd-mobile'
 
 export const Main = () => {
   return (
-    <>
+    <div style={{ height:'100vh' }}>
       <BrowserRouter>
-      <SafeArea position='top'/>
+        <SafeArea position='top' style={{ height:'5vh' }} />
         <Routes>
           <Route exact path='/home' element={ <Top /> }/>
           <Route path='/add' element={ <AddPage /> } />
@@ -20,6 +20,6 @@ export const Main = () => {
         </Routes>
         <FooterTabs />
       </BrowserRouter>
-    </>
+    </div>
   )
 }
