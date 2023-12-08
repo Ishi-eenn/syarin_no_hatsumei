@@ -1,11 +1,11 @@
-import { Button } from 'antd-mobile'
-import React from 'react'
+import { Button } from "antd-mobile";
+import React from "react";
 
 export const NormalButton = (props) => {
-  const {text , style} = props;
+  const { text, style, onClick } = props;
   return (
-    <Button {...props.style} >
-    {props.text}
+    <Button {...props.style} onClick={onClick}>
+      {props.text}
     </Button>
-    )
+  );
 };
