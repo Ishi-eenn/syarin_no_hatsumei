@@ -4,7 +4,9 @@ import { NormalForm } from "./NormalForm"
 import { useState } from "react"
 
 
-export const ListTabs = () => {
+export const ListTabs = (props) => {
+
+    const { activeTab, activeChangeHandler } = props;
 
     const [form] = Form.useForm()
 
@@ -29,6 +31,11 @@ export const ListTabs = () => {
         }
     ])
 
+    const activeChange = (key) => {
+        const index = shelves.findIndex(item => item.key === key)
+        activeChangeHandler(index)
+    }
+
     const changeHandler = () => {
         form.validateFields()
             .then((values) => {
@@ -41,7 +48,7 @@ export const ListTabs = () => {
 
     return (
         <div style={{ display:"flex", gap:'6px 4px'}}>
-            <Tabs defaultActiveKey='1' style={{ flex:1 }}>
+            <Tabs defaultActiveKey={activeTab} style={{ flex:1 }} onChange={activeChange}>
                 {shelves.map( (item) => (
                     <Tabs.Tab title={item.title} key={item.title} />
                 ))}
