@@ -17,7 +17,7 @@ export const BookShelf = () => {
   const grid = 8;
 
   const getListStyle = (isDraggingOver) => ({
-    background: isDraggingOver ? "lightblue" : "lightgrey",
+    background: isDraggingOver ? "sandybrown" : "peru",
     padding: grid,
     overflow: "hidden",
     display: "flex",
@@ -26,14 +26,15 @@ export const BookShelf = () => {
     height:'16.5vh',
     borderWidth: 3,
     borderColor: "black",
-    borderStyle: "solid"
+    borderStyle: "solid",
+    marginTop: "50px",
   });
   
   const getItemStyle = (isDragging, draggableStyle) => ({
     userSelect: "none",
     width:'10%',
     margin: `0 0 ${grid} 0`,
-    background: isDragging ? "lightgreen" : "grey",
+    background: isDragging ? "lightgreen" : "aliceblue",
     writingMode: "vertical-rl",
     textOrientation: "upright",
     fontSize: "10px",

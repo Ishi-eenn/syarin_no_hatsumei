@@ -7,7 +7,7 @@ export const ShelfTier = (props) => {
   const grid = 8;
 
   const getListStyle = (isDraggingOver) => ({
-    background: isDraggingOver ? "lightblue" : "lightgrey",
+    background: isDraggingOver ? "sandybrown" : "peru",
     padding: grid,
     overflow: "hidden",
     display: "flex",
@@ -23,7 +23,7 @@ export const ShelfTier = (props) => {
     userSelect: "none",
     width:'10%',
     margin: `0 0 ${grid} 0`,
-    background: isDragging ? "lightgreen" : "grey",
+    background: isDragging ? "white" : "aliceblue",
     writingMode: "vertical-rl",
     textOrientation: "upright",
     fontSize: "10px",
