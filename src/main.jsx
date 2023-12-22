@@ -12,8 +12,8 @@ export const Main = () => {
     <div style={{ height:'100vh' }}>
       <BrowserRouter>
         <SafeArea position='top' style={{ height:'5vh' }} />
-        <Routes>
-          <Route exact path='/home' element={ <Top /> }/>
+        <Routes >
+          <Route exact path='/' element={ <Top /> }/>
           <Route path='/add' element={ <AddPage /> } />
           <Route path='/list' element={ <ListPage /> } />
           <Route path='*' element={ <NotFound /> } />
