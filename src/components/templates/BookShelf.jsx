@@ -35,7 +35,7 @@ export const BookShelf = (props) => {
     userSelect: "none",
     width:'10%',
     margin: `0 0 ${grid} 0`,
-    background: isDragging ? "lightgreen" : "aliceblue",
+    background: isDragging ? "white" : "aliceblue",
     writingMode: "vertical-rl",
     textOrientation: "upright",
     fontSize: "10px",
@@ -149,7 +149,7 @@ export const BookShelf = (props) => {
             </Droppable>
           </DragDropContext>
 
-          {renderShelfTiers(shelfData?.boards)}
+          {/* {renderShelfTiers(shelfData?.boards)} */}
 
       </div>
     </div>
