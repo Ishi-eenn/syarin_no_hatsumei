@@ -12,7 +12,7 @@ export const FooterTabs = () => {
 
   const tabs = [
     {
-      key: '/home',
+      key: '/',
       title: 'ホーム',
       icon: <AppOutline />,
     },

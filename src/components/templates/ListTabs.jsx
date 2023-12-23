@@ -6,33 +6,14 @@ import { useState } from "react"
 
 export const ListTabs = (props) => {
 
-    const { activeTab, activeChangeHandler } = props;
+    const { activeTab, activeChangeHandler, shelves, shelvesChangeHandler } = props;
 
     const [form] = Form.useForm()
 
-    const [shelves, setShelves] = useState([
-        {
-            title: '本棚1',
-            key: '1',
-            unit: '',
-            h: '',
-            w: '',
-            boards: '',
-            roomH: ''
-        },
-        {
-            title: '本棚2',
-            key: '2',
-            unit: '',
-            h: '',
-            w: '',
-            boards: '',
-            roomH: ''
-        }
-    ])
+
 
     const activeChange = (key) => {
-        const index = shelves.findIndex(item => item.key === key)
+        const index = shelves.findIndex(item => item.title === key)
         activeChangeHandler(index)
     }
 
@@ -41,7 +22,7 @@ export const ListTabs = (props) => {
             .then((values) => {
                 const newShelves = [...shelves]
                 newShelves.push(values)
-                setShelves(newShelves)
+                shelvesChangeHandler(newShelves)
             });
     }
     

@@ -3,7 +3,8 @@ import { ShelfTier } from "../parts/ShelfTier"
 import { Droppable, Draggable, DragDropContext } from "react-beautiful-dnd";
 import { useState } from "react";
 
-export const BookShelf = () => {
+export const BookShelf = (props) => {
+  const { shelfData } = props;
 
   const [tier, setTier] = useState([[{id:"1-1",content:"進撃の巨人 1"},{id:"1-2",content:"進撃の巨人 2"},{id:"1-3",content:"進撃の巨人 3"}],
   [{id:"2-1",content:"ワンピース 1"},{id:"2-2",content:"ワンピース 2"},{id:"2-3",content:"ワンピース 3"}],
@@ -81,17 +82,25 @@ export const BookShelf = () => {
         move(testTier[start], testTier[end], source.index, destination.index);
       }
     }
+  }
     
+  const renderShelfTiers = (value) => {
+    console.log(shelfData)
+    const shelfTiers = [];
+    for (let i = 0; i < value; i++) {
+      shelfTiers.push(<ShelfTier key={i} />);
+    }
+    return shelfTiers;
   };
 
   return (
-    <div style={{ width:'100%', height:'65vh', display:"flex" }}>
+    <div style={{ width: "100%", height: "65vh", display: "flex" }}>
       <div
         style={{
-          width:'80%',
-          height:'50vh',
-          margin:'auto',
-          justifyContent:"center",
+          width: "80%",
+          height: "50vh",
+          margin: "auto",
+          justifyContent: "center",
           borderWidth: 3,
           borderColor: "brown",
           borderStyle: "solid"
@@ -140,9 +149,9 @@ export const BookShelf = () => {
             </Droppable>
           </DragDropContext>
 
-        
+          {renderShelfTiers(shelfData?.boards)}
 
       </div>
     </div>
-  )
-}
+  );
+};
