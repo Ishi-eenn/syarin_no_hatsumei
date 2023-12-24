@@ -12,8 +12,7 @@ export const BookShelf = (props) => {
 
   const [stockBooks, setStockBooks] = useState([{id:"3-1",content:"情報可視化入門"},{id:"3-2",content:"応用情報過去問"}]);
 
-  const testTier = tier;
-  const testStockBooks = stockBooks;
+  const [selectBooks, setSelectBooks] = useState([]);
 
   const grid = 8;
 
@@ -55,6 +54,20 @@ export const BookShelf = (props) => {
     destinationList.splice(endIndex, 0, removeSource);
   };
 
+  const handlerClickAction = (id) => {
+    const flag = selectBooks.find((item) => item === id);
+    if(flag) {
+      setSelectBooks(selectBooks.filter(item => item !== id));
+      console.log(id);
+      console.log("要素を削除しました");
+    } else {
+      setSelectBooks([...selectBooks,id]);
+      console.log(id);
+      console.log("要素を追加しました");
+    }
+    console.log(selectBooks);
+  }
+
   /* ドラッグアンドドロップしたとき*/
   const onDragEnd = (result) => {
     const { source, destination } = result;
@@ -69,29 +82,53 @@ export const BookShelf = (props) => {
     const start = isSourceStock ? "droppable-stock" : parseInt(source.droppableId.charAt(source.droppableId.length - 1), 10);
     const end = isDestinationStock ? "droppable-stock" : parseInt(destination.droppableId.charAt(destination.droppableId.length - 1), 10);
 
+    const tierTmp = tier.map((tier) => {
+      return tier.filter(item => !selectBooks.includes(item.id));
+    })
+    const removedTierTmp = tier.flat().filter(item => selectBooks.includes(item.id));
+    const stockTmp = stockBooks.filter(item => !selectBooks.includes(item.id));
+    const removedStockTmp = stockBooks.filter(item => selectBooks.includes(item.id));
+
     if (isSourceStock || isDestinationStock) {
-      if (source.droppableId === destination.droppableId) {
-        reorder(isSourceStock ? testStockBooks : testTier[start], source.index, destination.index);
+      if(selectBooks.length !== 0) {
+        if(isSourceStock) {
+          tierTmp[end].splice(destination.index, 0, ...removedStockTmp.concat(removedTierTmp));
+          setTier(tierTmp);
+          setStockBooks(stockTmp);
+        } else {
+          stockTmp.splice(destination.index, 0, ...removedStockTmp.concat(removedTierTmp));
+          setTier(tierTmp);
+          setStockBooks(stockTmp);
+        }
       } else {
-        move(isSourceStock ? testStockBooks : testTier[start], isDestinationStock ? testStockBooks : testTier[end], source.index, destination.index);
+        if (source.droppableId === destination.droppableId) {
+          reorder(isSourceStock ? stockBooks : tier[start], source.index, destination.index);
+        } else {
+          move(isSourceStock ? stockBooks : tier[start], isDestinationStock ? stockBooks : tier[end], source.index, destination.index);
+        }
       }
     } else {
-      if (source.droppableId === destination.droppableId) {
-        reorder(testTier[start], source.index, destination.index);
+      if(selectBooks.length !== 0) {
+        tierTmp[end].splice(destination.index, 0, ...removedStockTmp.concat(removedTierTmp));
+        setTier(tierTmp);
       } else {
-        move(testTier[start], testTier[end], source.index, destination.index);
+        if (source.droppableId === destination.droppableId) {
+          reorder(tier[start], source.index, destination.index);
+        } else {
+          move(tier[start], tier[end], source.index, destination.index);
+        }
       }
     }
   }
     
-  const renderShelfTiers = (value) => {
+  /* const renderShelfTiers = (value) => {
     console.log(shelfData)
     const shelfTiers = [];
     for (let i = 0; i < value; i++) {
       shelfTiers.push(<ShelfTier key={i} />);
     }
     return shelfTiers;
-  };
+  }; */
 
   return (
     <div style={{ width: "100%", height: "65vh", display: "flex" }}>
@@ -106,11 +143,9 @@ export const BookShelf = (props) => {
           borderStyle: "solid"
         }}>
           <DragDropContext onDragEnd={onDragEnd}>
-            {testTier.map( (item, index) => 
-              <ShelfTier books={item} index={index} key={index}/>
+            {tier.map( (item, index) => 
+              <ShelfTier books={item} handlerClickAction={handlerClickAction} index={index} key={index}/>
             )}
-
-
 
             <Droppable
               droppableId="droppable-stock"
@@ -122,7 +157,7 @@ export const BookShelf = (props) => {
                   ref={provided.innerRef}
                   style={getListStyle(snapshot.isDraggingOver)}
                 >
-                  {testStockBooks.map((item, index) => (
+                  {stockBooks.map((item, index) => (
                     <Draggable
                       key={item.id}
                       draggableId={item.id}
@@ -137,6 +172,7 @@ export const BookShelf = (props) => {
                             snapshot.isDragging,
                             provided.draggableProps.style
                           )}
+                          onClick={() => handlerClickAction(item.id)}
                         >
                           {item.content}
                         </div>
