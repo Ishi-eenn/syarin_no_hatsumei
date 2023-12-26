@@ -1,5 +1,5 @@
 import { Tag } from "antd-mobile"
-import { BookLists } from "../parts/BookLists"
+import { BookLists } from "../templates/BookLists"
 
 export const ListPage = () => {
   return (
