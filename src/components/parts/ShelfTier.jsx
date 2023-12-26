@@ -41,8 +41,6 @@ export const ShelfTier = (props) => {
     }
   };
 
-  console.log(clickedItems);
-
   return (
         <Droppable
               droppableId={`droppable-${index}`}

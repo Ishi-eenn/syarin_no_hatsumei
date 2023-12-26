@@ -1,4 +1,5 @@
 import { Button, Card } from "antd-mobile"
+import { InfiniteScroll, List, SwipeAction } from 'antd-mobile'
 import { ShelfTier } from "../parts/ShelfTier"
 import { Droppable, Draggable, DragDropContext } from "react-beautiful-dnd";
 import { useState } from "react";
@@ -54,21 +55,16 @@ export const BookShelf = (props) => {
     destinationList.splice(endIndex, 0, removeSource);
   };
 
+  /* クリックされたとき */
   const handlerClickAction = (id) => {
-    const flag = selectBooks.find((item) => item === id);
-    if(flag) {
+    if(selectBooks.find((item) => item === id)) {
       setSelectBooks(selectBooks.filter(item => item !== id));
-      console.log(id);
-      console.log("要素を削除しました");
     } else {
       setSelectBooks([...selectBooks,id]);
-      console.log(id);
-      console.log("要素を追加しました");
     }
-    console.log(selectBooks);
   }
 
-  /* ドラッグアンドドロップしたとき*/
+  /* ドラッグアンドドロップしたとき */
   const onDragEnd = (result) => {
     const { source, destination } = result;
 
@@ -146,6 +142,8 @@ export const BookShelf = (props) => {
             {tier.map( (item, index) => 
               <ShelfTier books={item} handlerClickAction={handlerClickAction} index={index} key={index}/>
             )}
+
+            
 
             <Droppable
               droppableId="droppable-stock"
