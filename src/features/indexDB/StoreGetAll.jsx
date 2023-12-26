@@ -1,4 +1,5 @@
 import { DB_NAME } from "./DBcreate"
+import { Transaction } from "./Transaction";
 
 
 export const StoreGetAll = (storeName) => {
@@ -13,13 +14,12 @@ export const StoreGetAll = (storeName) => {
 
   request.onsuccess = (event) => {
     const db = event.target.result;
-    const trans = db.transaction(storeName, 'readonly');
-    const store = trans.objectStore(storeName);
+    const store = Transaction(db, storeName , 'readonly');
     const getReq = store.get();
 
     getReq.onerror = (event) = {
-      console.log('error', getResult);
-    }
+      
+    };
 
     getReq.onsuccess = (event) => {
       getResult = event.target.result;
