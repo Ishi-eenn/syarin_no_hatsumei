@@ -26,11 +26,6 @@ export const NormalForm = (props) => {
       label: '板の枚数',
       placeHolder: '2枚'
     },
-    {
-      name: 'roomH',
-      label:'板間の長さ',
-      placeHolder: '2cm'
-    }
   ]
 
 

@@ -26,7 +26,10 @@ export const Top = () => {
         boards: '3',
         roomH: '30'
     }
-])
+  ])
+
+  console.log(shelves)
+
 
   const activeChangeHandler = (index) => {
     setActiveIndex(index);

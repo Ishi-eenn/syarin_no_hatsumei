@@ -21,7 +21,16 @@ export const ListTabs = (props) => {
         form.validateFields()
             .then((values) => {
                 const newShelves = [...shelves]
-                newShelves.push(values)
+                const booksArray = Array(Number(values.boards)).fill().map(() => []);
+
+                const newShelf = {
+                    title: values.title,
+                    id: values.id,
+                    h: values.h,
+                    w: values.w,
+                    books: booksArray
+                }
+                newShelves.push(newShelf);
                 shelvesChangeHandler(newShelves)
             });
     }
