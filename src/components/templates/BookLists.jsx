@@ -75,14 +75,6 @@ export const BookLists = () => {
   };
 
   const clickHandler = () =>
-    // Modal.show({
-    //     content: '本の追加実装',
-    //     closeOnAction: true,
-    //     actions: [{
-    //         key:'add',
-    //         text: 'add',
-    //     }]
-    // })
     Modal.confirm({
       cancelText: "取り消し",
       confirmText: "追加",
@@ -103,22 +95,8 @@ export const BookLists = () => {
           <Tabs.Tab title={tabItems[1].title} key={tabItems[1].key}></Tabs.Tab>
         </Tabs>
       ),
-      onConfirm: async () => {
-        try {
-          // フォームのバリデーションを行う
-          await form.validateFields();
-          // バリデーションが成功した場合、新しい本を追加
-          changeHandler();
-          // フォームをリセット
-          form.resetFields();
-          // モーダルを手動で閉じる
-          Modal.close();
-        } catch (error) {
-          // バリデーションエラーがあれば何もしない
-        }
-
-        // モーダルを手動で閉じない
-        return false;
+      onConfirm: () => {
+        changeHandler();
       },
     });
 

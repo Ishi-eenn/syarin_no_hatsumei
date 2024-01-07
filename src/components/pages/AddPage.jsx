@@ -14,7 +14,6 @@ export const AddPage = () => {
 
   const handleGetFieldName = () => {
     form.validateFields().then((values) => {
-      // valuesオブジェクトにはフォーム内の各フィールドの値が含まれています
       const inputValue = values.inputFieldName;
       console.log("入力された値:", inputValue);
     });
@@ -30,7 +29,7 @@ export const AddPage = () => {
           >
             <Form layout="vertical" mode="card" form={form}>
               <Form.Item
-                name="inputFieldName" // フィールド名を指定
+                name="inputFieldName"
                 extra={<a onClick={handleGetFieldName}>検索</a>}
               >
                 <Input placeholder="" />
