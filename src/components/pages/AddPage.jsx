@@ -2,6 +2,7 @@ import { AutoCenter, Card, Radio, Form, Input, Tabs } from "antd-mobile";
 import { NormalButton } from "../parts/NormalButton";
 import { NormalTag } from "../parts/NormalTag";
 import { useRef, useState, useEffect } from "react";
+import { cacheNames } from "workbox-core";
 
 export const AddPage = () => {
   const [form] = Form.useForm();
@@ -11,9 +12,12 @@ export const AddPage = () => {
     { key: "barcode", title: "バーコード" },
   ];
 
-  const handleGetFormValues = async () => {
-    const formValues = form.getFieldsValue();
-    console.log("フォームの値:", formValues);
+  const handleGetFieldName = () => {
+    form.validateFields().then((values) => {
+      // valuesオブジェクトにはフォーム内の各フィールドの値が含まれています
+      const inputValue = values.inputFieldName;
+      console.log("入力された値:", inputValue);
+    });
   };
 
   return (
@@ -25,8 +29,11 @@ export const AddPage = () => {
             bodyStyle={{ border: "solid 2px", background: "gray" }}
           >
             <Form layout="vertical" mode="card" form={form}>
-              <Form.Item extra={<a onClick={handleGetFormValues}>検索</a>}>
-                <Input placeholder="" name="inputFieldName" />
+              <Form.Item
+                name="inputFieldName" // フィールド名を指定
+                extra={<a onClick={handleGetFieldName}>検索</a>}
+              >
+                <Input placeholder="" />
               </Form.Item>
             </Form>
           </Card>

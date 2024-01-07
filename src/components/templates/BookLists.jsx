@@ -41,6 +41,16 @@ export const BookLists = () => {
     "U",
   ]);
 
+  const [form] = Form.useForm();
+  const headerName = null;
+  const formFields = [
+    {
+      name: "title",
+      label: "題名",
+      placeHolder: "",
+    },
+  ];
+
   const tabItems = [
     { key: "book", title: "入力" },
     { key: "barcode", title: "バーコード" },
@@ -52,6 +62,16 @@ export const BookLists = () => {
     const newBooks = [...books];
     newBooks.splice(index, 1);
     setBooks(newBooks);
+  };
+
+  const changeHandler = () => {
+    form.validateFields().then((values) => {
+      const newBooks = [...books];
+      newBooks.push(values.title);
+      newBooks.sort();
+      setBooks(newBooks);
+      form.resetFields();
+    });
   };
 
   const clickHandler = () =>
@@ -74,10 +94,32 @@ export const BookLists = () => {
               title="本の追加"
               bodyStyle={{ border: "solid 2px", background: "gray" }}
             ></Card>
+            <NormalForm
+              form={form}
+              formFields={formFields}
+              headerName={headerName}
+            />
           </Tabs.Tab>
           <Tabs.Tab title={tabItems[1].title} key={tabItems[1].key}></Tabs.Tab>
         </Tabs>
       ),
+      onConfirm: async () => {
+        try {
+          // フォームのバリデーションを行う
+          await form.validateFields();
+          // バリデーションが成功した場合、新しい本を追加
+          changeHandler();
+          // フォームをリセット
+          form.resetFields();
+          // モーダルを手動で閉じる
+          Modal.close();
+        } catch (error) {
+          // バリデーションエラーがあれば何もしない
+        }
+
+        // モーダルを手動で閉じない
+        return false;
+      },
     });
 
   return (
