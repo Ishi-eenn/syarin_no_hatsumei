@@ -1,6 +1,6 @@
 /* 単位はmmで統一 */
 
-export const TEST_DATA = [
+const TEST_DATA = [
   {
     title: "ストック",
     books: [
@@ -56,10 +56,12 @@ export const TEST_DATA = [
   },
 ];
 
-/* 初期状態 */
-export const DEFAULT_DATA = [
-  {
-    title: "ストック",
-    books: [],
-  },
-];
+const [testDataDtate, setTestDataDtate] = useState(TEST_DATA);
+
+// /* 初期状態 */
+// export const DEFAULT_DATA = [
+//   {
+//     title: "ストック",
+//     books: [],
+//   },
+// ];
