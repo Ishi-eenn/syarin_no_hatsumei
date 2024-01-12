@@ -108,6 +108,9 @@ export const BookLists = () => {
     // console.log(bookData);
   }, [bookData]);
 
+  /*****************************************************\
+  *             とりあえずこいつでとれるよーー               *
+  \*****************************************************/
   bookData.forEach((shelf) => {
     // console.log(shelf.title);
     if (shelf.books.length > 0) {
