@@ -16,11 +16,11 @@ export const FooterTabs = () => {
       title: 'ホーム',
       icon: <AppOutline />,
     },
-    {
-      key: '/add',
-      title: '追加',
-      icon: <AddOutline />
-    },
+    // {
+    //   key: '/add',
+    //   title: '追加',
+    //   icon: <AddOutline />
+    // },
     {
       key: '/list',
       title: '本リスト',
