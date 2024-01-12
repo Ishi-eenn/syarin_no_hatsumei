@@ -112,24 +112,12 @@ export const BookLists = () => {
   *             とりあえずこいつでとれるよーー               *
   \*****************************************************/
   bookData.forEach((shelf) => {
-    // console.log(shelf.title);
-    if (shelf.books.length > 0) {
-      if (Array.isArray(shelf.books[0])) {
-        // 本棚が多次元の場合
-        shelf.books.forEach((row, rowIndex) => {
-          row.forEach((book, bookIndex) => {
-            console.log(book.bookName);
-          });
-        });
-      } else {
-        // 本棚が1次元の場合
-        shelf.books.forEach((book, bookIndex) => {
-          console.log(book.bookName);
-        });
-      }
-    }
-  });
-
+  if (shelf.books.length > 0) {
+    Array.isArray(shelf.books[0])
+      ? shelf.books.forEach((row) => row.forEach((book) => console.log(book.bookName)))
+      : shelf.books.forEach((book) => console.log(book.bookName));
+  }
+});
 
   return (
     <>
