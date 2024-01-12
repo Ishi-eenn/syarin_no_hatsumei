@@ -164,7 +164,7 @@ export const BookShelf = (props) => {
     setSelectBooks([]);
   };
 
-  console.log(selectBooks);
+  // console.log(selectBooks);
 
   /* const renderShelfTiers = (value) => {
     console.log(shelfData)
