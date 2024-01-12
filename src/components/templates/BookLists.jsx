@@ -114,7 +114,7 @@ export const BookLists = () => {
         {bookData.map((shelf, shelfIndex) => (
           shelf.books.length > 0
             ? Array.isArray(shelf.books[0])
-              ? shelf.books.map((row, rowIndex) => (
+              ? shelf.books.map((row) => (
                 row.map((book, bookIndex) => (
                   <SwipeAction
                     key={bookIndex}
