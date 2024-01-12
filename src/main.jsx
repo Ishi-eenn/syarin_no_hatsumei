@@ -14,7 +14,7 @@ export const Main = () => {
         <SafeArea position='top' style={{ height:'5vh' }} />
         <Routes >
           <Route exact path='/' element={ <Top /> }/>
-          <Route path='/add' element={ <AddPage /> } />
+          {/* <Route path='/add' element={ <AddPage /> } /> */}
           <Route path='/list' element={ <ListPage /> } />
           <Route path='*' element={ <NotFound /> } />
         </Routes>
