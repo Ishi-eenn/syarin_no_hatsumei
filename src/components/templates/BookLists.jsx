@@ -108,36 +108,33 @@ export const BookLists = () => {
     // console.log(bookData);
   }, [bookData]);
 
-  /*****************************************************\
-  *             とりあえずこいつでとれるよーー               *
-  \*****************************************************/
-  bookData.forEach((shelf) => {
-  if (shelf.books.length > 0) {
-    Array.isArray(shelf.books[0])
-      ? shelf.books.forEach((row) => row.forEach((book) => console.log(book.bookName)))
-      : shelf.books.forEach((book) => console.log(book.bookName));
-  }
-});
-
   return (
     <>
       <List>
         {bookData.map((shelf, shelfIndex) => (
-          <div key={shelfIndex}>
-            {/* 本棚のタイトルを表示
-            <h2>{shelf.title}</h2> */}
-
-            {/* 本のリストを表示 */}
-            {shelf.books.map((book, bookIndex) => (
-              <SwipeAction
-                key={bookIndex}
-                rightActions={rightActions}
-                onAction={() => deleteHandler(shelfIndex, bookIndex)}
-              >
-                <List.Item key={bookIndex}>{book.bookName}</List.Item>
-              </SwipeAction>
-            ))}
-          </div>
+          shelf.books.length > 0
+            ? Array.isArray(shelf.books[0])
+              ? shelf.books.map((row, rowIndex) => (
+                row.map((book, bookIndex) => (
+                  <SwipeAction
+                    key={bookIndex}
+                    rightActions={rightActions}
+                    onAction={() => deleteHandler(shelfIndex, bookIndex)}
+                  >
+                    <List.Item key={bookIndex}>{book.bookName}</List.Item>
+                  </SwipeAction>
+                ))
+              ))
+              : shelf.books.map((book, bookIndex) => (
+                <SwipeAction
+                  key={bookIndex}
+                  rightActions={rightActions}
+                  onAction={() => deleteHandler(shelfIndex, bookIndex)}
+                >
+                  <List.Item key={bookIndex}>{book.bookName}</List.Item>
+                </SwipeAction>
+              ))
+            : null
         ))}
       </List>
       <InfiniteScroll />
