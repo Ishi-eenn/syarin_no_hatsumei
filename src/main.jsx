@@ -43,7 +43,7 @@ export const Main = () => {
         [
           {
             isbn: 9784065334928,
-            bookName: "中間管理録トネガワ",
+            bookName: "中間管理録トネガワ(3)",
             bookSize: 208,
             id: 0,
           },

@@ -105,8 +105,29 @@ export const BookLists = () => {
     });
 
   useEffect(() => {
-    console.log(bookData);
+    // console.log(bookData);
   }, [bookData]);
+
+  bookData.forEach((shelf) => {
+    // console.log(shelf.title);
+    if (shelf.books.length > 0) {
+      if (Array.isArray(shelf.books[0])) {
+        // 本棚が多次元の場合
+        shelf.books.forEach((row, rowIndex) => {
+          row.forEach((book, bookIndex) => {
+            console.log(book.bookName);
+          });
+        });
+      } else {
+        // 本棚が1次元の場合
+        shelf.books.forEach((book, bookIndex) => {
+          console.log(book.bookName);
+        });
+      }
+    }
+  });
+
+
   return (
     <>
       <List>
@@ -128,7 +149,6 @@ export const BookLists = () => {
           </div>
         ))}
       </List>
-
       <InfiniteScroll />
       <FloatingBubble
         style={{
