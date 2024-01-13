@@ -63,7 +63,9 @@ export const BookLists = () => {
 
   const deleteHandler = (shelfIndex, bookIndex) => {
     const newBookData = [...bookData];
+    console.log(shelfIndex, bookIndex);
     newBookData[shelfIndex].books.splice(bookIndex, 1);
+    console.log(newBookData);
     setBookData(newBookData);
   };
 

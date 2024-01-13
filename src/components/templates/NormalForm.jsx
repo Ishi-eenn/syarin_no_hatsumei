@@ -28,7 +28,6 @@ export const NormalForm = (props) => {
     },
   ]
 
-
   return (
     <Form form={form} >
       <Form.Header>本棚追加</Form.Header>
