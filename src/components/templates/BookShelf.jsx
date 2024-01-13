@@ -1,55 +1,29 @@
 import { Button, Card } from "antd-mobile";
 import { ShelfTier } from "../parts/ShelfTier";
 import { Droppable, Draggable, DragDropContext } from "react-beautiful-dnd";
-import { useState, useContext } from "react";
-import { BookDataContext } from "../../main";
+import { useState } from "react";
 
 export const BookShelf = (props) => {
   const { shelfData } = props;
-  const [bookData, setBookData] = useContext(BookDataContext);
 
-  // const [tier, setTier] = useState([
-  //   [
-  //     { id: "1-1", content: "進撃の巨人 1" },
-  //     { id: "1-2", content: "進撃の巨人 2" },
-  //     { id: "1-3", content: "進撃の巨人 3" },
-  //   ],
-  //   [
-  //     { id: "2-1", content: "ワンピース 1" },
-  //     { id: "2-2", content: "ワンピース 2" },
-  //     { id: "2-3", content: "ワンピース 3" },
-  //   ],
-  //   [],
-  // ]);
+  const [tier, setTier] = useState([
+    [
+      { id: "1-1", content: "進撃の巨人 1" },
+      { id: "1-2", content: "進撃の巨人 2" },
+      { id: "1-3", content: "進撃の巨人 3" },
+    ],
+    [
+      { id: "2-1", content: "ワンピース 1" },
+      { id: "2-2", content: "ワンピース 2" },
+      { id: "2-3", content: "ワンピース 3" },
+    ],
+    [],
+  ]);
 
-  const targetShelfId = "2"; // 対象の本棚のid
-
-  //idはつけれてない
-  const [tier, setTier] = useState(
-    bookData
-      .filter((shelf) => shelf.id === targetShelfId)
-      .flatMap((shelf) =>
-        shelf.books.map((booksArray) =>
-          booksArray.map((book, index) => ({
-            id: book.id,
-            content: book.bookName,
-          }))
-        )
-      )
-  );
-
-  console.log(tier);
-
-  const [stockBooks, setStockBooks] = useState(
-    bookData
-      .filter((shelf) => shelf.title === "ストック")
-      .flatMap((stock) =>
-        stock.books.map((book, index) => ({
-          id: book.id,
-          content: book.bookName,
-        }))
-      )
-  );
+  const [stockBooks, setStockBooks] = useState([
+    { id: "3-1", content: "情報可視化入門" },
+    { id: "3-2", content: "応用情報過去問" },
+  ]);
 
   const [selectBooks, setSelectBooks] = useState([]);
 
