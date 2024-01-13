@@ -1,29 +1,53 @@
 import { Button, Card } from "antd-mobile";
 import { ShelfTier } from "../parts/ShelfTier";
 import { Droppable, Draggable, DragDropContext } from "react-beautiful-dnd";
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { BookDataContext } from "../../main";
 
 export const BookShelf = (props) => {
   const { shelfData } = props;
+  const [bookData, setBookData] = useContext(BookDataContext);
 
-  const [tier, setTier] = useState([
-    [
-      { id: "1-1", content: "進撃の巨人 1" },
-      { id: "1-2", content: "進撃の巨人 2" },
-      { id: "1-3", content: "進撃の巨人 3" },
-    ],
-    [
-      { id: "2-1", content: "ワンピース 1" },
-      { id: "2-2", content: "ワンピース 2" },
-      { id: "2-3", content: "ワンピース 3" },
-    ],
-    [],
-  ]);
+  // const [tier, setTier] = useState([
+  //   [
+  //     { id: "1-1", content: "進撃の巨人 1" },
+  //     { id: "1-2", content: "進撃の巨人 2" },
+  //     { id: "1-3", content: "進撃の巨人 3" },
+  //   ],
+  //   [
+  //     { id: "2-1", content: "ワンピース 1" },
+  //     { id: "2-2", content: "ワンピース 2" },
+  //     { id: "2-3", content: "ワンピース 3" },
+  //   ],
+  //   [],
+  // ]);
 
-  const [stockBooks, setStockBooks] = useState([
-    { id: "3-1", content: "情報可視化入門" },
-    { id: "3-2", content: "応用情報過去問" },
-  ]);
+  const targetShelfId = "2"; // 対象の本棚のid
+
+  //idはつけれてない
+  const [tier, setTier] = useState(
+    bookData
+      .filter((shelf) => shelf.id === targetShelfId)
+      .flatMap((shelf) =>
+        shelf.books.map((booksArray, i) =>
+          booksArray.map((book, index) => ({
+            id: `${i + 1}-${index + 1}`,
+            content: book.bookName,
+          }))
+        )
+      )
+  );
+
+  const [stockBooks, setStockBooks] = useState(
+    bookData
+      .filter((shelf) => shelf.title === "ストック")
+      .flatMap((stock) =>
+        stock.books.map((book, index) => ({
+          id: `0-${index}`,
+          content: book.bookName,
+        }))
+      )
+  );
 
   const [selectBooks, setSelectBooks] = useState([]);
 
@@ -43,11 +67,14 @@ export const BookShelf = (props) => {
     marginTop: "50px",
   });
 
-  const getItemStyle = (isDragging, draggableStyle) => ({
+  const getItemStyle = (isDragging, draggableStyle, id) => ({
     userSelect: "none",
     width: "10%",
     margin: `0 0 ${grid} 0`,
-    background: isDragging ? "white" : "aliceblue",
+    background:
+      isDragging || selectBooks.find((item) => item === id)
+        ? "lightblue"
+        : "aliceblue",
     writingMode: "vertical-rl",
     textOrientation: "upright",
     fontSize: "10px",
@@ -164,31 +191,19 @@ export const BookShelf = (props) => {
     setSelectBooks([]);
   };
 
-  // console.log(selectBooks);
-
-  /* const renderShelfTiers = (value) => {
-    console.log(shelfData)
-    const shelfTiers = [];
-    for (let i = 0; i < value; i++) {
-      shelfTiers.push(<ShelfTier key={i} />);
-    }
-    return shelfTiers;
-  }; */
-
   return (
-    <div style={{ width: "100%", height: "65vh", display: "flex" }}>
-      <div
-        style={{
-          width: "80%",
-          height: "50vh",
-          margin: "auto",
-          justifyContent: "center",
-          borderWidth: 3,
-          borderColor: "brown",
-          borderStyle: "solid",
-        }}
-      >
-        <DragDropContext onDragEnd={onDragEnd}>
+    <div style={{ width: "100%", height: "65vh", marginTop: "5vh" }}>
+      <DragDropContext onDragEnd={onDragEnd}>
+        <div
+          style={{
+            width: "80%",
+            margin: "auto",
+            justifyContent: "center",
+            borderWidth: 3,
+            borderColor: "brown",
+            borderStyle: "solid",
+          }}
+        >
           {tier.map((item, index) => (
             <ShelfTier
               books={item}
@@ -199,7 +214,15 @@ export const BookShelf = (props) => {
               key={index}
             />
           ))}
-
+        </div>
+        <div
+          style={{
+            width: "80%",
+            height: "50vh",
+            margin: "auto",
+            justifyContent: "center",
+          }}
+        >
           <Droppable droppableId="droppable-stock" direction="horizontal">
             {(provided, snapshot) => (
               <div
@@ -216,7 +239,8 @@ export const BookShelf = (props) => {
                         {...provided.dragHandleProps}
                         style={getItemStyle(
                           snapshot.isDragging,
-                          provided.draggableProps.style
+                          provided.draggableProps.style,
+                          item.id
                         )}
                         onClick={() => handlerClickAction(item.id)}
                       >
@@ -229,10 +253,8 @@ export const BookShelf = (props) => {
               </div>
             )}
           </Droppable>
-        </DragDropContext>
-
-        {/* {renderShelfTiers(shelfData?.boards)} */}
-      </div>
+        </div>
+      </DragDropContext>
     </div>
   );
 };
