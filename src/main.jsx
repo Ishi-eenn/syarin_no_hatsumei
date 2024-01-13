@@ -6,10 +6,41 @@ import { FooterTabs } from "./common/Footer/FooterTabs";
 import { AddPage } from "./components/pages/AddPage";
 import { ListPage } from "./components/pages/ListPage";
 import { SafeArea } from "antd-mobile";
+import FetchData from "./features/FetchData";
 
 export const BookDataContext = createContext();
 
 export const Main = () => {
+  /* 検索テスト用
+  // ISBN、完全一致のみ
+  (async () => {
+    const onepieceISBN = 9784088836447;
+    const d = await FetchData(onepieceISBN);
+    // オブジェクトで返ってくる
+    console.log(d);
+  })();
+
+  // キーワード検索、1件ヒット
+  (async () => {
+    const d = await FetchData("情報可視化入門");
+    // オブジェクト配列(要素数1)で返ってくる
+    console.log(d);
+  })();
+
+  // キーワード検索、複数件ヒット
+  (async () => {
+    const d = await FetchData("情報可視化");
+    // オブジェクト配列(要素数2以上)で返ってくる
+    console.log(d);
+  })();
+
+  // 一致するデータがなかった場合
+  (async () => {
+    const d = await FetchData(9999999999999);
+    // falseが返ってくる
+    console.log(d);
+  })(); */
+
   const TEST_DATA = [
     {
       title: "ストック",

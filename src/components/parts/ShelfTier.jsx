@@ -25,14 +25,16 @@ export const ShelfTier = (props) => {
     userSelect: "none",
     width: "10%",
     margin: `0 0 ${grid} 0`,
-    background:
-      isDragging || selectBooks.find((item) => item === id)
-        ? "lightblue"
-        : "aliceblue",
+    background: isDragging ? "white" : "aliceblue",
     writingMode: "vertical-rl",
     textOrientation: "upright",
     fontSize: "10px",
     textAlign: "center",
+    borderWidth: 2,
+    borderColor: selectBooks.find((item) => item === id)
+      ? "lightblue"
+      : "transparent",
+    borderStyle: "solid",
     ...draggableStyle,
   });
 

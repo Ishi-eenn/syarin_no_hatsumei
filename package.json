@@ -8,6 +8,7 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "antd-mobile": "^5.33.0",
+    "fast-xml-parser": "^4.3.3",
     "quagga": "^0.12.1",
     "react": "^18.2.0",
     "react-beautiful-dnd": "^13.1.1",
@@ -26,7 +27,8 @@
     "workbox-range-requests": "^6.6.0",
     "workbox-routing": "^6.6.0",
     "workbox-strategies": "^6.6.0",
-    "workbox-streams": "^6.6.0"
+    "workbox-streams": "^6.6.0",
+    "xml-js": "^1.6.11"
   },
   "scripts": {
     "dev": "react-scripts start",
