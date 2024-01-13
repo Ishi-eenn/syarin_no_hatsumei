@@ -29,23 +29,21 @@ export const BookShelf = (props) => {
     bookData
       .filter((shelf) => shelf.id === targetShelfId)
       .flatMap((shelf) =>
-        shelf.books.map((booksArray) =>
+        shelf.books.map((booksArray, i) =>
           booksArray.map((book, index) => ({
-            id: book.id,
+            id: `${i + 1}-${index + 1}`,
             content: book.bookName,
           }))
         )
       )
   );
 
-  console.log(tier);
-
   const [stockBooks, setStockBooks] = useState(
     bookData
       .filter((shelf) => shelf.title === "ストック")
       .flatMap((stock) =>
         stock.books.map((book, index) => ({
-          id: book.id,
+          id: `0-${index}`,
           content: book.bookName,
         }))
       )
@@ -69,11 +67,14 @@ export const BookShelf = (props) => {
     marginTop: "50px",
   });
 
-  const getItemStyle = (isDragging, draggableStyle) => ({
+  const getItemStyle = (isDragging, draggableStyle, id) => ({
     userSelect: "none",
     width: "10%",
     margin: `0 0 ${grid} 0`,
-    background: isDragging ? "white" : "aliceblue",
+    background:
+      isDragging || selectBooks.find((item) => item === id)
+        ? "lightblue"
+        : "aliceblue",
     writingMode: "vertical-rl",
     textOrientation: "upright",
     fontSize: "10px",
@@ -190,31 +191,19 @@ export const BookShelf = (props) => {
     setSelectBooks([]);
   };
 
-  // console.log(selectBooks);
-
-  /* const renderShelfTiers = (value) => {
-    console.log(shelfData)
-    const shelfTiers = [];
-    for (let i = 0; i < value; i++) {
-      shelfTiers.push(<ShelfTier key={i} />);
-    }
-    return shelfTiers;
-  }; */
-
   return (
-    <div style={{ width: "100%", height: "65vh", display: "flex" }}>
-      <div
-        style={{
-          width: "80%",
-          height: "50vh",
-          margin: "auto",
-          justifyContent: "center",
-          borderWidth: 3,
-          borderColor: "brown",
-          borderStyle: "solid",
-        }}
-      >
-        <DragDropContext onDragEnd={onDragEnd}>
+    <div style={{ width: "100%", height: "65vh", marginTop: "5vh" }}>
+      <DragDropContext onDragEnd={onDragEnd}>
+        <div
+          style={{
+            width: "80%",
+            margin: "auto",
+            justifyContent: "center",
+            borderWidth: 3,
+            borderColor: "brown",
+            borderStyle: "solid",
+          }}
+        >
           {tier.map((item, index) => (
             <ShelfTier
               books={item}
@@ -225,7 +214,15 @@ export const BookShelf = (props) => {
               key={index}
             />
           ))}
-
+        </div>
+        <div
+          style={{
+            width: "80%",
+            height: "50vh",
+            margin: "auto",
+            justifyContent: "center",
+          }}
+        >
           <Droppable droppableId="droppable-stock" direction="horizontal">
             {(provided, snapshot) => (
               <div
@@ -242,7 +239,8 @@ export const BookShelf = (props) => {
                         {...provided.dragHandleProps}
                         style={getItemStyle(
                           snapshot.isDragging,
-                          provided.draggableProps.style
+                          provided.draggableProps.style,
+                          item.id
                         )}
                         onClick={() => handlerClickAction(item.id)}
                       >
@@ -255,10 +253,8 @@ export const BookShelf = (props) => {
               </div>
             )}
           </Droppable>
-        </DragDropContext>
-
-        {/* {renderShelfTiers(shelfData?.boards)} */}
-      </div>
+        </div>
+      </DragDropContext>
     </div>
   );
 };
