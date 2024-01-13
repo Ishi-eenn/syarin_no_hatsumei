@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import {
   FloatingBubble,
   InfiniteScroll,
@@ -12,34 +12,37 @@ import {
 } from "antd-mobile";
 import { AddCircleOutline } from "antd-mobile-icons";
 import { NormalForm } from "../parts/NormalForm";
+import { BookDataContext } from "../../main.jsx";
 
 export const BookLists = () => {
-  const [books, setBooks] = useState([
-    "進撃の巨人",
-    "ワンピース",
-    "情報可視化入門",
-    "A",
-    "B",
-    "C",
-    "D",
-    "E",
-    "F",
-    "G",
-    "H",
-    "I",
-    "J",
-    "K",
-    "L",
-    "M",
-    "N",
-    "O",
-    "P",
-    "Q",
-    "R",
-    "S",
-    "T",
-    "U",
-  ]);
+  const [bookData, setBookData] = useContext(BookDataContext);
+
+  // const [books, setBooks] = useState([
+  //   "進撃の巨人",
+  //   "ワンピース",
+  //   "情報可視化入門",
+  //   "A",
+  //   "B",
+  //   "C",
+  //   "D",
+  //   "E",
+  //   "F",
+  //   "G",
+  //   "H",
+  //   "I",
+  //   "J",
+  //   "K",
+  //   "L",
+  //   "M",
+  //   "N",
+  //   "O",
+  //   "P",
+  //   "Q",
+  //   "R",
+  //   "S",
+  //   "T",
+  //   "U",
+  // ]);
 
   const [form] = Form.useForm();
   const headerName = null;
@@ -47,7 +50,7 @@ export const BookLists = () => {
     {
       name: "title",
       label: "題名",
-      placeHolder: "",
+      placeHolder: "ここに入力",
     },
   ];
 
@@ -58,18 +61,21 @@ export const BookLists = () => {
 
   const rightActions = [{ key: "delete", text: "削除", color: "danger" }];
 
-  const deleteHandler = (index) => {
-    const newBooks = [...books];
-    newBooks.splice(index, 1);
-    setBooks(newBooks);
+  const deleteHandler = (shelfIndex, bookIndex) => {
+    const newBookData = [...bookData];
+    console.log(shelfIndex, bookIndex);
+    newBookData[shelfIndex].books.splice(bookIndex, 1);
+    console.log(newBookData);
+    setBookData(newBookData);
   };
 
   const changeHandler = () => {
     form.validateFields().then((values) => {
-      const newBooks = [...books];
-      newBooks.push(values.title);
+      const newBooks = [...bookData];
+      //isbnは仮
+      newBooks[0].books.push({ isbn: 12312, bookName: values.title });
       newBooks.sort();
-      setBooks(newBooks);
+      setBookData(newBooks);
       form.resetFields();
     });
   };
@@ -100,17 +106,37 @@ export const BookLists = () => {
       },
     });
 
+  useEffect(() => {
+    // console.log(bookData);
+  }, [bookData]);
+
   return (
     <>
       <List>
-        {books.map((item, index) => (
-          <SwipeAction
-            key={item}
-            rightActions={rightActions}
-            onAction={() => deleteHandler(index)}
-          >
-            <List.Item>{item}</List.Item>
-          </SwipeAction>
+        {bookData.map((shelf, shelfIndex) => (
+          shelf.books.length > 0
+            ? Array.isArray(shelf.books[0])
+              ? shelf.books.map((row) => (
+                row.map((book, bookIndex) => (
+                  <SwipeAction
+                    key={bookIndex}
+                    rightActions={rightActions}
+                    onAction={() => deleteHandler(shelfIndex, bookIndex)}
+                  >
+                    <List.Item key={bookIndex}>{book.bookName}</List.Item>
+                  </SwipeAction>
+                ))
+              ))
+              : shelf.books.map((book, bookIndex) => (
+                <SwipeAction
+                  key={bookIndex}
+                  rightActions={rightActions}
+                  onAction={() => deleteHandler(shelfIndex, bookIndex)}
+                >
+                  <List.Item key={bookIndex}>{book.bookName}</List.Item>
+                </SwipeAction>
+              ))
+            : null
         ))}
       </List>
       <InfiniteScroll />
