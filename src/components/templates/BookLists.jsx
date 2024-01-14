@@ -16,7 +16,6 @@ import { BookDataContext } from "../../main.jsx";
 
 export const BookLists = () => {
   const [bookData, setBookData] = useContext(BookDataContext);
-
   // const [books, setBooks] = useState([
   //   "進撃の巨人",
   //   "ワンピース",
@@ -61,10 +60,14 @@ export const BookLists = () => {
 
   const rightActions = [{ key: "delete", text: "削除", color: "danger" }];
 
-  const deleteHandler = (shelfIndex, bookIndex) => {
+  const deleteHandler = (shelfIndex, stageIndex, bookIndex) => {
     const newBookData = [...bookData];
-    console.log(shelfIndex, bookIndex);
-    newBookData[shelfIndex].books.splice(bookIndex, 1);
+    console.log(shelfIndex, stageIndex, bookIndex);
+    if (shelfIndex === 0) {
+      newBookData[shelfIndex].books.splice(bookIndex, 1);
+    } else {
+      newBookData[shelfIndex].books[stageIndex].splice(bookIndex, 1);
+    }
     console.log(newBookData);
     setBookData(newBookData);
   };
@@ -113,31 +116,33 @@ export const BookLists = () => {
   return (
     <>
       <List>
-        {bookData.map((shelf, shelfIndex) => (
+        {bookData.map((shelf, shelfIndex) =>
           shelf.books.length > 0
             ? Array.isArray(shelf.books[0])
-              ? shelf.books.map((row) => (
-                row.map((book, bookIndex) => (
+              ? shelf.books.map((row, stageIndex) =>
+                  row.map((book, bookIndex) => (
+                    <SwipeAction
+                      key={bookIndex}
+                      rightActions={rightActions}
+                      onAction={() =>
+                        deleteHandler(shelfIndex, stageIndex, bookIndex)
+                      }
+                    >
+                      <List.Item key={bookIndex}>{book.bookName}</List.Item>
+                    </SwipeAction>
+                  ))
+                )
+              : shelf.books.map((book, bookIndex) => (
                   <SwipeAction
                     key={bookIndex}
                     rightActions={rightActions}
-                    onAction={() => deleteHandler(shelfIndex, bookIndex)}
+                    onAction={() => deleteHandler(shelfIndex, 0, bookIndex)}
                   >
                     <List.Item key={bookIndex}>{book.bookName}</List.Item>
                   </SwipeAction>
                 ))
-              ))
-              : shelf.books.map((book, bookIndex) => (
-                <SwipeAction
-                  key={bookIndex}
-                  rightActions={rightActions}
-                  onAction={() => deleteHandler(shelfIndex, bookIndex)}
-                >
-                  <List.Item key={bookIndex}>{book.bookName}</List.Item>
-                </SwipeAction>
-              ))
             : null
-        ))}
+        )}
       </List>
       <InfiniteScroll />
       <FloatingBubble
