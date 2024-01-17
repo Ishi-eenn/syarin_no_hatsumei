@@ -28,8 +28,6 @@ export const Top = () => {
     }
   ])
 
-  // console.log(shelves)
-
 
   const activeChangeHandler = (index) => {
     setActiveIndex(index);

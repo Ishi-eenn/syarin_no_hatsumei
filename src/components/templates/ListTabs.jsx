@@ -48,7 +48,6 @@ export const ListTabs = (props) => {
       const newShelves = [...shelves];
       newShelves.push(values);
       shelvesChangeHandler(newShelves);
-      console.log(newShelves);
     });
   };
 
