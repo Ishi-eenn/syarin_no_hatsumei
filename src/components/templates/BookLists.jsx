@@ -16,32 +16,6 @@ import { BookDataContext } from "../../main.jsx";
 
 export const BookLists = () => {
   const [bookData, setBookData] = useContext(BookDataContext);
-  // const [books, setBooks] = useState([
-  //   "進撃の巨人",
-  //   "ワンピース",
-  //   "情報可視化入門",
-  //   "A",
-  //   "B",
-  //   "C",
-  //   "D",
-  //   "E",
-  //   "F",
-  //   "G",
-  //   "H",
-  //   "I",
-  //   "J",
-  //   "K",
-  //   "L",
-  //   "M",
-  //   "N",
-  //   "O",
-  //   "P",
-  //   "Q",
-  //   "R",
-  //   "S",
-  //   "T",
-  //   "U",
-  // ]);
 
   const [form] = Form.useForm();
   const headerName = null;
@@ -51,10 +25,16 @@ export const BookLists = () => {
       label: "題名",
       placeHolder: "ここに入力",
     },
+    {
+      name: "width",
+      label: "ページ数",
+      placeHolder: "ここに入力",
+    },
   ];
 
   const tabItems = [
     { key: "book", title: "入力" },
+    { key: "keyword", title: "キーワード検索" },
     { key: "barcode", title: "バーコード" },
   ];
 
@@ -102,6 +82,7 @@ export const BookLists = () => {
             />
           </Tabs.Tab>
           <Tabs.Tab title={tabItems[1].title} key={tabItems[1].key}></Tabs.Tab>
+          <Tabs.Tab title={tabItems[2].title} key={tabItems[2].key}></Tabs.Tab>
         </Tabs>
       ),
       onConfirm: () => {
@@ -109,40 +90,42 @@ export const BookLists = () => {
       },
     });
 
-  useEffect(() => {
-    // console.log(bookData);
-  }, [bookData]);
-
   return (
     <>
       <List>
-        {bookData.map((shelf, shelfIndex) =>
-          shelf.books.length > 0
-            ? Array.isArray(shelf.books[0])
-              ? shelf.books.map((row, stageIndex) =>
-                  row.map((book, bookIndex) => (
+        {bookData.map((shelf, shelfIndex) => (
+          <div key={shelfIndex}>
+            {/* 本棚のタイトルを表示 */}
+            <h3>{shelf.title}</h3>
+
+            {/* 本のリストを表示 */}
+            {shelf.books.length > 0
+              ? Array.isArray(shelf.books[0])
+                ? shelf.books.map((row, stageIndex) =>
+                    row.map((book, bookIndex) => (
+                      <SwipeAction
+                        key={bookIndex}
+                        rightActions={rightActions}
+                        onAction={() =>
+                          deleteHandler(shelfIndex, stageIndex, bookIndex)
+                        }
+                      >
+                        <List.Item key={bookIndex}>{book.bookName}</List.Item>
+                      </SwipeAction>
+                    ))
+                  )
+                : shelf.books.map((book, bookIndex) => (
                     <SwipeAction
                       key={bookIndex}
                       rightActions={rightActions}
-                      onAction={() =>
-                        deleteHandler(shelfIndex, stageIndex, bookIndex)
-                      }
+                      onAction={() => deleteHandler(shelfIndex, 0, bookIndex)}
                     >
                       <List.Item key={bookIndex}>{book.bookName}</List.Item>
                     </SwipeAction>
                   ))
-                )
-              : shelf.books.map((book, bookIndex) => (
-                  <SwipeAction
-                    key={bookIndex}
-                    rightActions={rightActions}
-                    onAction={() => deleteHandler(shelfIndex, 0, bookIndex)}
-                  >
-                    <List.Item key={bookIndex}>{book.bookName}</List.Item>
-                  </SwipeAction>
-                ))
-            : null
-        )}
+              : null}
+          </div>
+        ))}
       </List>
       <InfiniteScroll />
       <FloatingBubble
