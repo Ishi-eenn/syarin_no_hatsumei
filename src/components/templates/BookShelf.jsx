@@ -129,6 +129,7 @@ export const BookShelf = (props) => {
     const tierTmp = tier.map((tier) => {
       return tier.filter((item) => !selectBooks.includes(item.id));
     });
+
     const removedTierTmp = tier
       .flat()
       .filter((item) => selectBooks.includes(item.id));

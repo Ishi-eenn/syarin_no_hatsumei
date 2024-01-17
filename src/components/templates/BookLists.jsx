@@ -14,6 +14,8 @@ import { AddCircleOutline } from "antd-mobile-icons";
 import { NormalForm } from "../parts/NormalForm";
 import { BookDataContext } from "../../main.jsx";
 
+import Scanner from "../../features/Scanner.jsx";
+
 export const BookLists = () => {
   const [bookData, setBookData] = useContext(BookDataContext);
 
@@ -113,11 +115,21 @@ export const BookLists = () => {
   return (
     <>
       <List>
-        {bookData.map((shelf, shelfIndex) => (
+        {bookData.map((shelf, shelfIndex) =>
           shelf.books.length > 0
             ? Array.isArray(shelf.books[0])
-              ? shelf.books.map((row) => (
-                row.map((book, bookIndex) => (
+              ? shelf.books.map((row) =>
+                  row.map((book, bookIndex) => (
+                    <SwipeAction
+                      key={bookIndex}
+                      rightActions={rightActions}
+                      onAction={() => deleteHandler(shelfIndex, bookIndex)}
+                    >
+                      <List.Item key={bookIndex}>{book.bookName}</List.Item>
+                    </SwipeAction>
+                  ))
+                )
+              : shelf.books.map((book, bookIndex) => (
                   <SwipeAction
                     key={bookIndex}
                     rightActions={rightActions}
@@ -126,18 +138,8 @@ export const BookLists = () => {
                     <List.Item key={bookIndex}>{book.bookName}</List.Item>
                   </SwipeAction>
                 ))
-              ))
-              : shelf.books.map((book, bookIndex) => (
-                <SwipeAction
-                  key={bookIndex}
-                  rightActions={rightActions}
-                  onAction={() => deleteHandler(shelfIndex, bookIndex)}
-                >
-                  <List.Item key={bookIndex}>{book.bookName}</List.Item>
-                </SwipeAction>
-              ))
             : null
-        ))}
+        )}
       </List>
       <InfiniteScroll />
       <FloatingBubble
