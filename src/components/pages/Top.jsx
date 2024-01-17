@@ -8,24 +8,19 @@ export const Top = () => {
 
   const [shelves, setShelves] = useState([
     {
-      title: "本棚1",
-      key: "1",
-      unit: "",
-      h: "120",
-      w: "50",
-      boards: "2",
-      roomH: "40",
+        title: '本棚1',
+        key: '1',
+        w: '50',
+        boards: '2',
     },
     {
-      title: "本棚2",
-      key: "2",
-      unit: "",
-      h: "120",
-      w: "70",
-      boards: "3",
-      roomH: "30",
-    },
-  ]);
+        title: '本棚2',
+        key: '2',
+        w: '70',
+        boards: '3',
+    }
+  ])
+
 
   const activeChangeHandler = (index) => {
     setActiveIndex(index);

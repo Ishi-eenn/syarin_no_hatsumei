@@ -1,7 +1,6 @@
 import { Button, Modal, Tabs, Form } from "antd-mobile";
 import { AddOutline } from "antd-mobile-icons";
 import { NormalForm } from "../parts/NormalForm";
-import { useState } from "react";
 
 export const ListTabs = (props) => {
   const { activeTab, activeChangeHandler, shelves, shelvesChangeHandler } =
@@ -15,26 +14,37 @@ export const ListTabs = (props) => {
       name: "title",
       label: "本棚の名前",
       placeHolder: "",
-    },
-    {
-      name: "h",
-      label: "縦",
-      placeHolder: "5cm",
+      validateTrigger:['onChange'],
+      rules:[
+        {
+          required: true,
+          message: '名前を入力してください',
+        },
+      ]
     },
     {
       name: "w",
-      label: "横",
-      placeHolder: "10cm",
+      label: "横(cm)",
+      placeHolder: "10",
+      validateTrigger:['onChange'],
+      rules:[
+        {
+          required: true,
+          message: '横幅を入力してください',
+        },
+      ]
     },
     {
       name: "boards",
-      label: "板の枚数",
-      placeHolder: "2枚",
-    },
-    {
-      name: "roomH",
-      label: "板間の長さ",
-      placeHolder: "2cm",
+      label: "板の枚数(枚)",
+      placeHolder: "2",
+      validateTrigger:['onChange'],
+      rules:[
+        {
+          required: true,
+          message: '板を入力してください',
+        },
+      ]
     },
   ];
 
@@ -48,8 +58,12 @@ export const ListTabs = (props) => {
       const newShelves = [...shelves];
       newShelves.push(values);
       shelvesChangeHandler(newShelves);
+      form.resetFields();
     });
   };
+
+  console.log(shelves);
+
 
   return (
     <div style={{ display: "flex", gap: "6px 4px" }}>

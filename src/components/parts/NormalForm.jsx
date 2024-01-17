@@ -7,7 +7,7 @@ export const NormalForm = (props) => {
     <Form form={form}>
       <Form.Header>{headerName}</Form.Header>
       {formFields.map((item) => (
-        <Form.Item name={item.name} label={item.label} key={item.label}>
+        <Form.Item key={item.label} {...item} >
           <Input placeholder={item.placeHolder} />
         </Form.Item>
       ))}
