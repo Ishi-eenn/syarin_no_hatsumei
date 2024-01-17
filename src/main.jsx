@@ -90,7 +90,7 @@ export const Main = () => {
             isbn: 9784065334928,
             bookName: "情報可視化入門",
             bookSize: 208,
-            id: 1,
+            id: 0,
           },
         ],
       ],
