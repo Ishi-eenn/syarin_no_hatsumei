@@ -50,6 +50,7 @@ export const BookLists = () => {
     } else {
       newBookData[shelfIndex].books[stageIndex].splice(bookIndex, 1);
     }
+    localStorage.setItem("bookData", JSON.stringify(newBookData));
     setBookData(newBookData);
   };
 
@@ -59,6 +60,7 @@ export const BookLists = () => {
       //isbnは仮
       newBooks[0].books.push({ isbn: 12312, bookName: values.title });
       newBooks.sort();
+      localStorage.setItem("bookData", JSON.stringify(newBooks));
       setBookData(newBooks);
       form.resetFields();
     });
