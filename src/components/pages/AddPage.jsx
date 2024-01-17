@@ -15,7 +15,6 @@ export const AddPage = () => {
   const handleGetFieldName = () => {
     form.validateFields().then((values) => {
       const inputValue = values.inputFieldName;
-      console.log("入力された値:", inputValue);
     });
   };
 
