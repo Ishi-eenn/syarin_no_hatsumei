@@ -56,7 +56,15 @@ export const ListTabs = (props) => {
   const changeHandler = () => {
     form.validateFields().then((values) => {
       const newShelves = [...shelves];
-      newShelves.push(values);
+      const newBooksArray = Array.from({ length: values.boards }, () => []);
+
+      newShelves.push({
+        title: values.title,
+        id: String(Object.keys(shelves).length),
+        w: values.w,
+        books: newBooksArray
+      });
+
       shelvesChangeHandler(newShelves);
       form.resetFields();
     });

@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { BookShelf } from "../templates/BookShelf";
 import { ListTabs } from "../templates/ListTabs";
 import { BookShelves } from "../templates/BookShelves";
 
@@ -9,15 +8,15 @@ export const Top = () => {
   const [shelves, setShelves] = useState([
     {
         title: '本棚1',
-        key: '1',
+        id: '1',
         w: '50',
-        boards: '2',
+        books: [[], []]
     },
     {
         title: '本棚2',
-        key: '2',
+        id: '2',
         w: '70',
-        boards: '3',
+        books: [[], [], []]
     }
   ])
 
