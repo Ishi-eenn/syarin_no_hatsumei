@@ -13,13 +13,15 @@ import {
 import { AddCircleOutline } from "antd-mobile-icons";
 import { NormalForm } from "../parts/NormalForm";
 import { BookDataContext } from "../../main.jsx";
+import FetchData from "../../features/FetchData";
+import { ListItem } from "antd-mobile/es/components/list/list-item";
 
 export const BookLists = () => {
   const [bookData, setBookData] = useContext(BookDataContext);
 
   const [form] = Form.useForm();
   const headerName = null;
-  const formFields = [
+  const formFields1 = [
     {
       name: "title",
       label: "題名",
@@ -32,6 +34,13 @@ export const BookLists = () => {
     },
   ];
 
+  const formFields2 = [
+    {
+      name: "titleORisbn",
+      label: "題名もしくはISBN",
+      placeHolder: "ここに入力",
+    },
+  ];
   const tabItems = [
     { key: "book", title: "入力" },
     { key: "keyword", title: "キーワード検索" },
@@ -62,11 +71,31 @@ export const BookLists = () => {
     });
   };
 
+  const [a, setA] = useState("");
+
+  useEffect(() => {
+    console.log(a); // a の値が更新されたらコンソールに表示
+  }, [a]); // a が変更されたときだけ useEffect 内の処理が実行される
+
+  //   const onepieceISBN = 9784088836447;
+  const handleGetFieldName = async () => {
+    const values = await form.validateFields();
+    let inputValue = values.inputFieldName;
+    // inputValueが数値の場合、シングルクォーテーションを外す
+    if (!isNaN(inputValue)) {
+      inputValue = Number(inputValue);
+    }
+    const d = await FetchData(inputValue);
+
+    setA(d.bookName);
+  };
+
   const clickHandler = () =>
     Modal.confirm({
       cancelText: "取り消し",
       confirmText: "追加",
       closeOnMaskClick: true,
+      forceRender: true,
       content: (
         <Tabs>
           <Tabs.Tab title={tabItems[0].title} key={tabItems[0].key}>
@@ -76,11 +105,25 @@ export const BookLists = () => {
             ></Card>
             <NormalForm
               form={form}
-              formFields={formFields}
+              formFields={formFields1}
               headerName={headerName}
             />
           </Tabs.Tab>
-          <Tabs.Tab title={tabItems[1].title} key={tabItems[1].key}></Tabs.Tab>
+          <Tabs.Tab title={tabItems[1].title} key={tabItems[1].key}>
+            <Card
+              title="本の検索"
+              bodyStyle={{ border: "solid 2px", background: "gray" }}
+            ></Card>
+            <Form form={form}>
+              <Form.Item
+                name="inputFieldName"
+                extra={<a onClick={handleGetFieldName}>検索</a>}
+              >
+                <Input placeholder="ここに入力" />
+              </Form.Item>
+            </Form>
+            <List>{a}</List>
+          </Tabs.Tab>
           <Tabs.Tab title={tabItems[2].title} key={tabItems[2].key}></Tabs.Tab>
         </Tabs>
       ),
