@@ -86,32 +86,13 @@ export const BookLists = () => {
   };
 
   const [a, setA] = useState("");
-
-  if (a == "" || a == null) {
-    // console.log(a);
-  } else {
-  a.map((item, index) => {
-    console.log(item.bookName);
-  });
-}
-  // console.log(a);
-
-  // useEffect(() => {
-  //   console.log(a); // a の値が更新されたらコンソールに表示
-  // }, [a]); // a が変更されたときだけ useEffect 内の処理が実行される
+  const [inputVal, setInputValue] = useState("");
 
   //   const onepieceISBN = 9784088836447;
   const handleGetFieldName = async () => {
-    const values = await form.validateFields();
-    let inputValue = values.inputFieldName;
-    // inputValueが数値の場合、シングルクォーテーションを外す
-    if (!isNaN(inputValue)) {
-      inputValue = Number(inputValue);
-    }
-    const d = await FetchData(inputValue);
-
-    // setA(d.bookName);
-    // console.log(d);
+    console.log(inputVal);
+    const d = await FetchData(inputVal);
+    console.log(d);
     setA(d);
   };
 
@@ -139,14 +120,19 @@ export const BookLists = () => {
               title="本の検索"
               bodyStyle={{ border: "solid 2px", background: "gray" }}
             ></Card>
-            <Form form={form}>
-              <Form.Item
-                name="inputFieldName"
-                extra={<a onClick={handleGetFieldName}>検索</a>}
-              >
-                <Input placeholder="ここに入力" />
-              </Form.Item>
-            </Form>
+
+            <div style={
+              {display: "flex",
+              flexDirection: "row",
+            }
+            }>
+              <input type="text" onChange={(event) => {
+                console.log(event.target.value);
+                const values = event.target.value;
+                setInputValue(values);
+              }}/>
+              <button onClick={handleGetFieldName}>検索</button>
+            </div>
             <List>
               <PrintHandler Books={a} />
             </List>
