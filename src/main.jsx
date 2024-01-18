@@ -3,10 +3,8 @@ import { Top } from "./components/pages/Top";
 import { NotFound } from "./components/pages/NotFound";
 import React, { createContext } from "react";
 import { FooterTabs } from "./common/Footer/FooterTabs";
-import { AddPage } from "./components/pages/AddPage";
 import { ListPage } from "./components/pages/ListPage";
 import { SafeArea } from "antd-mobile";
-import FetchData from "./features/FetchData";
 
 export const BookDataContext = createContext();
 

@@ -1,12 +1,14 @@
-import { Button, Modal, Tabs, Form } from "antd-mobile";
+import { Button, Modal, Tabs, Form, Popup } from "antd-mobile";
 import { AddOutline } from "antd-mobile-icons";
 import { NormalForm } from "../parts/NormalForm";
+import { useState } from "react";
 
 export const ListTabs = (props) => {
   const { activeTab, activeChangeHandler, shelves, shelvesChangeHandler } =
     props;
 
   const [form] = Form.useForm();
+  const [popVisible, setPopVisible] = useState(false);
 
   const headerName = "本棚追加";
   const formFields = [
@@ -98,14 +100,37 @@ export const ListTabs = (props) => {
                 headerName={headerName}
               />
             ),
-            onConfirm: () => {
-              changeHandler();
+            onConfirm: async () => {
+              try {
+                await form.validateFields();
+                changeHandler();
+              } catch (errorInfo) {
+                setPopVisible(true);
+              }
             },
           })
         }
       >
         <AddOutline />
       </Button>
+      <Popup
+        position='top'
+        bodyStyle={{
+          marginLeft:'5vw',
+          width: '90vw',
+          height:'10vh',
+          textAlign:"center",
+          fontWeight:'bold',
+          color:'red',
+          fontSize:16,
+          lineHeight:'10vh',
+          backgroundColor:'white',
+          borderRadius: 10
+        }}
+        visible={popVisible}
+        onMaskClick={() => setPopVisible(false)}>
+        フォーム内の全ての値を入力してください。
+      </Popup>
     </div>
   );
 };
