@@ -65,8 +65,8 @@ export const BookShelf = (props) => {
   const getListStyle = (isDraggingOver) => ({
     background: isDraggingOver ? "sandybrown" : "peru",
     padding: grid,
-    overflow: "hidden",
-    display: "flex",
+    overflow: "scroll",
+    whiteSpace: 'nowrap',
     width: "100%",
     height: "16.5vh",
     borderWidth: 3,
@@ -77,6 +77,8 @@ export const BookShelf = (props) => {
 
   const getItemStyle = (isDragging, draggableStyle, id) => ({
     userSelect: "none",
+    display: 'inline-block',
+    height:'100%',
     width: "40px",
     margin: `0 0 ${grid} 0`,
     background: isDragging ? "white" : "aliceblue",
