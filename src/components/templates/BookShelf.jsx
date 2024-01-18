@@ -78,7 +78,7 @@ export const BookShelf = (props) => {
   const getItemStyle = (isDragging, draggableStyle, id) => ({
     userSelect: "none",
     display: 'inline-block',
-    height:'100%',
+    height:'95%',
     width: "40px",
     margin: `0 0 ${grid} 0`,
     background: isDragging ? "white" : "aliceblue",

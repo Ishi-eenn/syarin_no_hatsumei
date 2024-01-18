@@ -157,7 +157,6 @@ export const BookLists = () => {
           </div>
         ))}
       </List>
-      <InfiniteScroll />
       <FloatingBubble
         style={{
           "--initial-position-bottom": "100px",
