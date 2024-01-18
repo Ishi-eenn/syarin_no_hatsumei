@@ -7,7 +7,7 @@ import {
   List,
   Button,
 } from "antd-mobile";
-import { useRef, useState, useContext } from "react";
+import { useRef, useState, useContext, useEffect } from "react";
 import { NormalForm } from "../parts/NormalForm";
 import Scanner from "../../features/Scanner";
 import { BookDataContext } from "../../main";
