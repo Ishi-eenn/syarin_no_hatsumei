@@ -162,7 +162,7 @@ export const BookLists = () => {
           "--initial-position-right": "30px",
           "--edge-distance": "50px",
         }}
-        onClick={() => clickHandler({ inputVal, setInputValue })}
+        onClick={() => clickHandler()}
       >
         <AddCircleOutline fontSize={50} />
       </FloatingBubble>
