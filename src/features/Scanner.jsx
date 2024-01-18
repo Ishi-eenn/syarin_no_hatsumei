@@ -3,8 +3,7 @@ import Quagga from "quagga";
 import FetchData from "./FetchData";
 
 const Scanner = (props) => {
-
-  const {stopHandler, myQuaggaRef, setScannerBook} = props;
+  const { myQuaggaRef, setScannerBook } = props;
 
   useEffect(() => {
     start();
@@ -12,7 +11,6 @@ const Scanner = (props) => {
       Quagga.stop();
     };
   }, []);
-
 
   const start = () => {
     Quagga.init(
@@ -43,24 +41,18 @@ const Scanner = (props) => {
       if (result.boxes === undefined) return;
     });
 
-    Quagga.onDetected(async(result) => {
+    Quagga.onDetected(async (result) => {
       console.log("app" + result.codeResult.code);
       if (result.codeResult.code.startsWith("9784")) {
         const data = await FetchData(Number(result.codeResult.code));
         setScannerBook(data);
+
         console.log(data);
-        stopHandler();
       }
     });
   };
 
-
-
-  return (
-    <div id="container" ref={myQuaggaRef}>
-
-    </div>
-  );
+  return <div id="container" ref={myQuaggaRef}></div>;
 };
 
 export default Scanner;

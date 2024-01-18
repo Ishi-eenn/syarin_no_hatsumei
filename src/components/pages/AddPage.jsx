@@ -19,15 +19,14 @@ import { BookDataContext } from "../../main";
 import FetchData from "../../features/FetchData";
 import { ListItem } from "antd-mobile/es/components/list/list-item";
 import { useNavigate } from "react-router-dom";
+import Quagga from "quagga";
 
 export const AddPage = () => {
   const [bookData, setBookData] = useContext(BookDataContext);
   const [form] = Form.useForm();
   const headerName = null;
   const [fetchedData, setFetchedData] = useState("");
-  const [tabKey, setTabKey] = useState("book");
-  const [scannerBook, setScannerBook] = useState("0000000000000");
-  const [selectedBookIndex, setSelectedBookIndex] = useState(null);
+  const [scannerBook, setScannerBook] = useState("");
   const navigate = useNavigate();
 
   const myQuaggaRef = useRef(null);
@@ -50,10 +49,13 @@ export const AddPage = () => {
     { key: "barcode", title: "バーコード" },
   ];
 
-  const barcodeSearchHandler = () => {
-    Quagga.stop();
-    myQuaggaRef.current.style.display = "none";
-  };
+  useEffect(() => {
+    if (scannerBook !== "") {
+      addScanneredBook();
+      Quagga.stop();
+      myQuaggaRef.current.style.display = "none";
+    }
+  }, [scannerBook]);
 
   const changeHandler = () => {
     form.validateFields().then((values) => {
@@ -97,11 +99,19 @@ export const AddPage = () => {
     console.log(fetchedData);
   };
 
-  console.log(selectedBookIndex);
-
+  const addScanneredBook = () => {
+    const newBooks = [...bookData];
+    newBooks[0].books.push({
+      bookName: scannerBook[0].bookName,
+      bookSize: scannerBook[0].bookSize,
+    });
+    newBooks.sort();
+    setBookData(newBooks);
+    navigate("/list");
+  };
   return (
     <>
-      <Tabs onChange={(index) => setTabKey(index)}>
+      <Tabs>
         <Tabs.Tab title={tabItems[0].title} key={tabItems[0].key}>
           <Card
             title="本の追加"
@@ -151,11 +161,7 @@ export const AddPage = () => {
         </Tabs.Tab>
 
         <Tabs.Tab title={tabItems[2].title} key={tabItems[2].key}>
-          <Scanner
-            stopHandler={barcodeSearchHandler}
-            myQuaggaRef={myQuaggaRef}
-            setScannerBook={setScannerBook}
-          />
+          <Scanner myQuaggaRef={myQuaggaRef} setScannerBook={setScannerBook} />
         </Tabs.Tab>
       </Tabs>
     </>
