@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from "react";
+import { useRef, useState, useContext } from "react";
 import {
   FloatingBubble,
   InfiniteScroll,
@@ -7,30 +7,19 @@ import {
   SwipeAction,
   Form,
   Tabs,
-  Input,
   Card,
 } from "antd-mobile";
 import { AddCircleOutline } from "antd-mobile-icons";
 import { NormalForm } from "../parts/NormalForm";
 import { BookDataContext } from "../../main.jsx";
-import FetchData from "../../features/FetchData";
-import { ListItem } from "antd-mobile/es/components/list/list-item";
-
-const PrintHandler = (Books) => {
-  if (Books || Books === null) console.log("Books is null");
-  else console.log(Books);
-  return (
-    <>
-      {!Books &&
-        Books.map((item, index) => {
-          <ListItem>{item.bookName}</ListItem>;
-        })}
-    </>
-  );
-};
+import Scanner from "../../features/Scanner.jsx";
+import Quagga from "quagga";
 
 export const BookLists = () => {
   const [bookData, setBookData] = useContext(BookDataContext);
+  const [tabKey, setTabKey] = useState("book");
+  const [scannerBook, setScannerBook] = useState("0000000000000");
+  const myQuaggaRef = useRef(null);
 
   const [form] = Form.useForm();
   const headerName = null;
@@ -73,7 +62,7 @@ export const BookLists = () => {
     setBookData(newBookData);
   };
 
-  const changeHandler = () => {
+  const exactSearchHandler = () => {
     form.validateFields().then((values) => {
       const newBooks = [...bookData];
       //isbnは仮
@@ -84,18 +73,10 @@ export const BookLists = () => {
     });
   };
 
-  const [a, setA] = useState("");
-  const [inputVal, setInputValue] = useState("");
-
-  //   const onepieceISBN = 9784088836447;
-  const handleGetFieldName = async (inputVal) => {
-    console.log(inputVal);
-    const d = await FetchData(inputVal);
-    console.log(d);
-    setA(d);
+  const barcodeSearchHandler = () => {
+    Quagga.stop();
+    myQuaggaRef.current.style.display = "none";
   };
-
-  console.log(inputVal);
 
   const clickHandler = (props) =>
     Modal.confirm({
@@ -104,7 +85,7 @@ export const BookLists = () => {
       closeOnMaskClick: true,
       forceRender: true,
       content: (
-        <Tabs>
+        <Tabs onChange={(index) => setTabKey(index)}>
           <Tabs.Tab title={tabItems[0].title} key={tabItems[0].key}>
             <Card
               title="本の追加"
@@ -116,32 +97,24 @@ export const BookLists = () => {
               headerName={headerName}
             />
           </Tabs.Tab>
-          <Tabs.Tab title={tabItems[1].title} key={tabItems[1].key}>
-            <Card
-              title="本の検索"
-              bodyStyle={{ border: "solid 2px", background: "gray" }}
-            ></Card>
-
-            <div style={{ display: "flex", flexDirection: "row" }}>
-              <input
-                type="text"
-                onChange={(event) => {
-                  setInputValue(event.target.value);
-                  console.log(inputVal);
-                }}
-              />
-              <button onClick={() => handleGetFieldName(inputVal)}>検索</button>
-            </div>
-            <List>
-              <PrintHandler Books={a} />
-            </List>
+          <Tabs.Tab title={tabItems[1].title} key={tabItems[1].key}></Tabs.Tab>
+          <Tabs.Tab title={tabItems[2].title} key={tabItems[2].key}>
+            <Scanner
+              stopHandler={barcodeSearchHandler}
+              myQuaggaRef={myQuaggaRef}
+              setScannerBook={setScannerBook}
+            />
           </Tabs.Tab>
-          <Tabs.Tab title={tabItems[2].title} key={tabItems[2].key}></Tabs.Tab>
         </Tabs>
       ),
       onConfirm: () => {
-        setInputValue("inputvalue");
-        changeHandler();
+        if (tabKey === "book") {
+          exactSearchHandler();
+        } else if (tabKey === "keyword") {
+          //完全一致検索の処理
+        } else {
+          barcodeSearchHandler();
+        }
       },
     });
 

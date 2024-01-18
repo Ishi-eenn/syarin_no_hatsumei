@@ -1,4 +1,4 @@
-import { Button, Modal, Tabs, Form } from "antd-mobile";
+import { Button, Modal, Tabs, Form, Popup } from "antd-mobile";
 import { AddOutline } from "antd-mobile-icons";
 import { NormalForm } from "../parts/NormalForm";
 import { useState } from "react";
@@ -8,6 +8,7 @@ export const ListTabs = (props) => {
     props;
 
   const [form] = Form.useForm();
+  const [popVisible, setPopVisible] = useState(false);
 
   const headerName = "本棚追加";
   const formFields = [
@@ -15,26 +16,37 @@ export const ListTabs = (props) => {
       name: "title",
       label: "本棚の名前",
       placeHolder: "",
-    },
-    {
-      name: "h",
-      label: "縦",
-      placeHolder: "5cm",
+      validateTrigger:['onChange'],
+      rules:[
+        {
+          required: true,
+          message: '名前を入力してください',
+        },
+      ]
     },
     {
       name: "w",
-      label: "横",
-      placeHolder: "10cm",
+      label: "横(cm)",
+      placeHolder: "10",
+      validateTrigger:['onChange'],
+      rules:[
+        {
+          required: true,
+          message: '横幅を入力してください',
+        },
+      ]
     },
     {
       name: "boards",
-      label: "板の枚数",
-      placeHolder: "2枚",
-    },
-    {
-      name: "roomH",
-      label: "板間の長さ",
-      placeHolder: "2cm",
+      label: "板の枚数(枚)",
+      placeHolder: "2",
+      validateTrigger:['onChange'],
+      rules:[
+        {
+          required: true,
+          message: '板を入力してください',
+        },
+      ]
     },
   ];
 
@@ -46,10 +58,22 @@ export const ListTabs = (props) => {
   const changeHandler = () => {
     form.validateFields().then((values) => {
       const newShelves = [...shelves];
-      newShelves.push(values);
+      const newBooksArray = Array.from({ length: values.boards }, () => []);
+
+      newShelves.push({
+        title: values.title,
+        id: String(Object.keys(shelves).length),
+        w: values.w,
+        books: newBooksArray
+      });
+
       shelvesChangeHandler(newShelves);
+      form.resetFields();
     });
   };
+
+  // console.log(shelves);
+
 
   return (
     <div style={{ display: "flex", gap: "6px 4px" }}>
@@ -76,14 +100,37 @@ export const ListTabs = (props) => {
                 headerName={headerName}
               />
             ),
-            onConfirm: () => {
-              changeHandler();
+            onConfirm: async () => {
+              try {
+                await form.validateFields();
+                changeHandler();
+              } catch (errorInfo) {
+                setPopVisible(true);
+              }
             },
           })
         }
       >
         <AddOutline />
       </Button>
+      <Popup
+        position='top'
+        bodyStyle={{
+          marginLeft:'5vw',
+          width: '90vw',
+          height:'10vh',
+          textAlign:"center",
+          fontWeight:'bold',
+          color:'red',
+          fontSize:16,
+          lineHeight:'10vh',
+          backgroundColor:'white',
+          borderRadius: 10
+        }}
+        visible={popVisible}
+        onMaskClick={() => setPopVisible(false)}>
+        フォーム内の全ての値を入力してください。
+      </Popup>
     </div>
   );
 };

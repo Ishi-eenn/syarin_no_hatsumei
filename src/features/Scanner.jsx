@@ -1,12 +1,20 @@
-import { useState, useRef, useEffect } from "react";
+import { useEffect } from "react";
 import Quagga from "quagga";
+import FetchData from "./FetchData";
 
 const Scanner = (props) => {
-  const [data, setData] = useState("0000000000000");
-  const [camera, setCamera] = useState(false);
-  const myQuaggaRef = useRef(null);
+
+  const {stopHandler, myQuaggaRef, setScannerBook} = props;
+
+  useEffect(() => {
+    start();
+    return () => {
+      Quagga.stop();
+    };
+  }, []);
+
+
   const start = () => {
-    setCamera(true);
     Quagga.init(
       {
         inputStream: {
@@ -35,32 +43,22 @@ const Scanner = (props) => {
       if (result.boxes === undefined) return;
     });
 
-    Quagga.onDetected((result) => {
-      console.log("app" + String(result.codeResult.code));
-      if (String(result.codeResult.code).startsWith("9784")) {
-        setData(result.codeResult.code);
-        stop();
+    Quagga.onDetected(async(result) => {
+      console.log("app" + result.codeResult.code);
+      if (result.codeResult.code.startsWith("9784")) {
+        const data = await FetchData(Number(result.codeResult.code));
+        setScannerBook(data);
+        console.log(data);
+        stopHandler();
       }
     });
   };
 
-  const stop = () => {
-    setCamera(false);
-    Quagga.stop();
-    myQuaggaRef.current.style.display = "none";
-  };
+
 
   return (
-    <div>
-      <div>
-        {!camera ? (
-          <button onClick={start}>Start</button>
-        ) : (
-          <button onClick={stop}>Stop</button>
-        )}
-      </div>
-      <div id="container" ref={myQuaggaRef}></div>
-      <div>{data}</div>
+    <div id="container" ref={myQuaggaRef}>
+
     </div>
   );
 };
