@@ -1,4 +1,3 @@
-import { Button, Card } from "antd-mobile";
 import { ShelfTier } from "../parts/ShelfTier";
 import { Droppable, Draggable, DragDropContext } from "react-beautiful-dnd";
 import { useState, useContext } from "react";
@@ -24,7 +23,6 @@ export const BookShelf = (props) => {
 
   const targetShelfId = "2"; // 対象の本棚のid
 
-  //idはつけれてない
   const [tier, setTier] = useState(
     bookData
       .filter((shelf) => shelf.id === targetShelfId)
@@ -33,6 +31,7 @@ export const BookShelf = (props) => {
           booksArray.map((book, index) => ({
             id: `${i + 1}-${index + 1}`,
             content: book.bookName,
+            bookSize: book.bookSize,
           }))
         )
       )
@@ -45,9 +44,12 @@ export const BookShelf = (props) => {
         stock.books.map((book, index) => ({
           id: `0-${index}`,
           content: book.bookName,
+          bookSize: book.bookSize,
         }))
       )
   );
+
+  console.log(tier);
 
   const [selectBooks, setSelectBooks] = useState([]);
 
@@ -139,6 +141,42 @@ export const BookShelf = (props) => {
     const removedStockTmp = stockBooks.filter((item) =>
       selectBooks.includes(item.id)
     );
+
+    if (!isDestinationStock) {
+      let sourceSize;
+      if (selectBooks.length !== 0) {
+        sourceSize = selectBooks
+          .map((id) => {
+            return tier
+              .flat()
+              .concat(stockBooks)
+              .filter((item) => item.id === id)
+              .map((book) => book.bookSize);
+          })
+          .flat()
+          .reduce((sum, value) => sum + value);
+      } else {
+        if (!isSourceStock) {
+          sourceSize = tier[start][source.index].bookSize;
+        } else {
+          sourceSize = stockBooks[source.index].bookSize;
+        }
+      }
+
+      const shelfWidth = parseInt(
+        bookData.filter((shelf) => shelf.id === targetShelfId)[0].w
+      );
+
+      const totalSize =
+        tier[end]
+          .map((item) => item.bookSize)
+          .reduce((sum, value) => sum + value) + sourceSize;
+
+      if (shelfWidth < totalSize) {
+        setSelectBooks([]);
+        return;
+      }
+    }
 
     if (isSourceStock || isDestinationStock) {
       if (selectBooks.length !== 0) {
