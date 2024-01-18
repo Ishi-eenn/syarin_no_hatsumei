@@ -13,6 +13,8 @@ import { AddCircleOutline } from "antd-mobile-icons";
 import { NormalForm } from "../parts/NormalForm";
 import { BookDataContext } from "../../main.jsx";
 
+import Scanner from "../../features/Scanner.jsx";
+
 export const BookLists = () => {
   const [bookData, setBookData] = useContext(BookDataContext);
 
