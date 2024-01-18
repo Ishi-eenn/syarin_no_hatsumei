@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from "react";
+import { useRef, useState, useContext } from "react";
 import {
   FloatingBubble,
   InfiniteScroll,
@@ -12,11 +12,14 @@ import {
 import { AddCircleOutline } from "antd-mobile-icons";
 import { NormalForm } from "../parts/NormalForm";
 import { BookDataContext } from "../../main.jsx";
-
 import Scanner from "../../features/Scanner.jsx";
+import Quagga from "quagga";
 
 export const BookLists = () => {
   const [bookData, setBookData] = useContext(BookDataContext);
+  const [tabKey, setTabKey] = useState("book");
+  const [scannerBook, setScannerBook] = useState("0000000000000");
+  const myQuaggaRef = useRef(null);
 
   const [form] = Form.useForm();
   const headerName = null;
@@ -53,7 +56,7 @@ export const BookLists = () => {
     setBookData(newBookData);
   };
 
-  const changeHandler = () => {
+  const exactSearchHandler = () => {
     form.validateFields().then((values) => {
       const newBooks = [...bookData];
       //isbnは仮
@@ -65,13 +68,19 @@ export const BookLists = () => {
     });
   };
 
+  const barcodeSearchHandler = () => {
+    Quagga.stop();
+    myQuaggaRef.current.style.display = "none";
+  }
+
+
   const clickHandler = () =>
     Modal.confirm({
       cancelText: "取り消し",
       confirmText: "追加",
       closeOnMaskClick: true,
       content: (
-        <Tabs>
+        <Tabs onChange={(index) => setTabKey(index)}>
           <Tabs.Tab title={tabItems[0].title} key={tabItems[0].key}>
             <Card
               title="本の追加"
@@ -84,11 +93,22 @@ export const BookLists = () => {
             />
           </Tabs.Tab>
           <Tabs.Tab title={tabItems[1].title} key={tabItems[1].key}></Tabs.Tab>
-          <Tabs.Tab title={tabItems[2].title} key={tabItems[2].key}></Tabs.Tab>
+          <Tabs.Tab title={tabItems[2].title} key={tabItems[2].key}>
+            <Scanner
+              stopHandler={barcodeSearchHandler}
+              myQuaggaRef={myQuaggaRef}
+              setScannerBook={setScannerBook}/>
+          </Tabs.Tab>
         </Tabs>
       ),
       onConfirm: () => {
-        changeHandler();
+        if(tabKey === 'book'){
+          exactSearchHandler();
+        } else if(tabKey === 'keyword'){
+          //完全一致検索の処理
+        } else {
+          barcodeSearchHandler();
+        }
       },
     });
 
