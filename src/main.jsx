@@ -5,6 +5,7 @@ import React, { createContext } from "react";
 import { FooterTabs } from "./common/Footer/FooterTabs";
 import { ListPage } from "./components/pages/ListPage";
 import { SafeArea } from "antd-mobile";
+import { AddPage } from "./components/pages/AddPage";
 
 export const BookDataContext = createContext();
 
@@ -229,6 +230,7 @@ export const Main = () => {
             <Route exact path="/" element={<Top />} />
             <Route path="/list" element={<ListPage />} />
             <Route path="*" element={<NotFound />} />
+            <Route path="/add" element={<AddPage />} />
           </Routes>
           <FooterTabs />
         </BrowserRouter>

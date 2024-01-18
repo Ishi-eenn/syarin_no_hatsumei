@@ -6,8 +6,8 @@ const FetchData = async (d) => {
   try {
     const url =
       typeof d === "number"
-        ? `https://ndlsearch.ndl.go.jp/api/opensearch?isbn=${d}`
-        : `https://ndlsearch.ndl.go.jp/api/opensearch?title=${d}&mediatype=books`;
+        ? `https://ndlsearch.ndl.go.jp/api/opensearch?isbn=${d}&cnt=10`
+        : `https://ndlsearch.ndl.go.jp/api/opensearch?title=${d}&mediatype=books&cnt=10`;
     const data = await fetch(url);
 
     if (!data.ok) {
@@ -30,11 +30,13 @@ const FetchData = async (d) => {
         parseInt(item["dc:extent"].match(/\d+/)[0], 10) * 0.08 >= 10
           ? parseInt(item["dc:extent"].match(/\d+/)[0], 10) * 0.08
           : 15;
-      return {
-        isbn,
-        bookName,
-        bookSize,
-      };
+      return [
+        {
+          isbn,
+          bookName,
+          bookSize,
+        },
+      ];
 
       /* タイトルキーワード検索→複数件配列で取得 */
     } else {

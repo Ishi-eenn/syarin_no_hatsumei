@@ -1,4 +1,4 @@
-import { useRef, useState, useContext } from "react";
+import { useRef, useState, useContext, useEffect } from "react";
 import {
   FloatingBubble,
   List,
@@ -13,16 +13,35 @@ import { NormalForm } from "../parts/NormalForm";
 import { BookDataContext } from "../../main.jsx";
 import Scanner from "../../features/Scanner.jsx";
 import Quagga from "quagga";
+import FetchData from "../../features/FetchData";
+import { ListItem } from "antd-mobile/es/components/list/list-item";
+import { click } from "@testing-library/user-event/dist/click";
+import { useNavigate } from "react-router-dom";
+//import { AddPage } from "../pages/AddPage";
+
+const PrintHandler = (Books) => {
+  if (Books || Books === null) console.log("Books is null");
+  else console.log(Books);
+  return (
+    <>
+      {!Books &&
+        Books.map((item, index) => {
+          <ListItem>{item.bookName}</ListItem>;
+        })}
+    </>
+  );
+};
 
 export const BookLists = () => {
   const [bookData, setBookData] = useContext(BookDataContext);
   const [tabKey, setTabKey] = useState("book");
   const [scannerBook, setScannerBook] = useState("0000000000000");
   const myQuaggaRef = useRef(null);
+  const navigate = useNavigate();
 
   const [form] = Form.useForm();
   const headerName = null;
-  const formFields1 = [
+  const formFields = [
     {
       name: "title",
       label: "題名",
@@ -35,13 +54,6 @@ export const BookLists = () => {
     },
   ];
 
-  const formFields2 = [
-    {
-      name: "titleORisbn",
-      label: "題名もしくはISBN",
-      placeHolder: "ここに入力",
-    },
-  ];
   const tabItems = [
     { key: "book", title: "入力" },
     { key: "keyword", title: "キーワード検索" },
@@ -66,7 +78,10 @@ export const BookLists = () => {
     form.validateFields().then((values) => {
       const newBooks = [...bookData];
       //isbnは仮
-      newBooks[0].books.push({ isbn: 12312, bookName: values.title });
+      newBooks[0].books.push({
+        bookName: values.title,
+        bookSize: values.width,
+      });
       newBooks.sort();
       localStorage.setItem("bookData", JSON.stringify(newBooks));
       setBookData(newBooks);
@@ -74,50 +89,11 @@ export const BookLists = () => {
     });
   };
 
-  const barcodeSearchHandler = () => {
-    Quagga.stop();
-    myQuaggaRef.current.style.display = "none";
+  const handleButtonClick = () => {
+    // ここでAddPageコンポーネントを呼び出すなどの処理を実行
+    console.log("Button clicked");
+    navigate("/add");
   };
-
-  const clickHandler = (props) =>
-    Modal.confirm({
-      cancelText: "取り消し",
-      confirmText: "本追加",
-      closeOnMaskClick: true,
-      forceRender: true,
-      content: (
-        <Tabs onChange={(index) => setTabKey(index)}>
-          <Tabs.Tab title={tabItems[0].title} key={tabItems[0].key}>
-            <Card
-              title="本の追加"
-              bodyStyle={{ border: "solid 2px", background: "gray" }}
-            ></Card>
-            <NormalForm
-              form={form}
-              formFields={formFields1}
-              headerName={headerName}
-            />
-          </Tabs.Tab>
-          <Tabs.Tab title={tabItems[1].title} key={tabItems[1].key}></Tabs.Tab>
-          <Tabs.Tab title={tabItems[2].title} key={tabItems[2].key}>
-            <Scanner
-              stopHandler={barcodeSearchHandler}
-              myQuaggaRef={myQuaggaRef}
-              setScannerBook={setScannerBook}
-            />
-          </Tabs.Tab>
-        </Tabs>
-      ),
-      onConfirm: () => {
-        if (tabKey === "book") {
-          exactSearchHandler();
-        } else if (tabKey === "keyword") {
-          //完全一致検索の処理
-        } else {
-          barcodeSearchHandler();
-        }
-      },
-    });
 
   return (
     <>
@@ -162,7 +138,7 @@ export const BookLists = () => {
           "--initial-position-right": "30px",
           "--edge-distance": "50px",
         }}
-        onClick={() => clickHandler()}
+        onClick={handleButtonClick}
       >
         <AddCircleOutline fontSize={50} />
       </FloatingBubble>
