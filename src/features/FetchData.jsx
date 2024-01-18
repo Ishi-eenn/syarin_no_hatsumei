@@ -7,7 +7,7 @@ const FetchData = async (d) => {
     const url =
       typeof d === "number"
         ? `https://ndlsearch.ndl.go.jp/api/opensearch?isbn=${d}`
-        : `https://ndlsearch.ndl.go.jp/api/opensearch?title=${d}&mediatype=books`;
+        : `https://ndlsearch.ndl.go.jp/api/opensearch?title=${d}&mediatype=books&cnt=10`;
     const data = await fetch(url);
 
     if (!data.ok) {

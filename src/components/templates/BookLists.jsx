@@ -16,6 +16,20 @@ import { BookDataContext } from "../../main.jsx";
 import FetchData from "../../features/FetchData";
 import { ListItem } from "antd-mobile/es/components/list/list-item";
 
+const PrintHandler = (Books) => {
+  if(Books || Books === null)
+    console.log("Books is null");
+  else
+    console.log(Books);
+  return (
+    <>
+      {!Books && Books.map((item, index) => {
+        <ListItem>{item.bookName}</ListItem>
+      }
+      )}
+    </>
+  )};
+
 export const BookLists = () => {
   const [bookData, setBookData] = useContext(BookDataContext);
 
@@ -73,9 +87,18 @@ export const BookLists = () => {
 
   const [a, setA] = useState("");
 
-  useEffect(() => {
-    console.log(a); // a の値が更新されたらコンソールに表示
-  }, [a]); // a が変更されたときだけ useEffect 内の処理が実行される
+  if (a == "" || a == null) {
+    // console.log(a);
+  } else {
+  a.map((item, index) => {
+    console.log(item.bookName);
+  });
+}
+  // console.log(a);
+
+  // useEffect(() => {
+  //   console.log(a); // a の値が更新されたらコンソールに表示
+  // }, [a]); // a が変更されたときだけ useEffect 内の処理が実行される
 
   //   const onepieceISBN = 9784088836447;
   const handleGetFieldName = async () => {
@@ -87,7 +110,9 @@ export const BookLists = () => {
     }
     const d = await FetchData(inputValue);
 
-    setA(d.bookName);
+    // setA(d.bookName);
+    // console.log(d);
+    setA(d);
   };
 
   const clickHandler = () =>
@@ -122,7 +147,9 @@ export const BookLists = () => {
                 <Input placeholder="ここに入力" />
               </Form.Item>
             </Form>
-            <List>{a}</List>
+            <List>
+              <PrintHandler Books={a} />
+            </List>
           </Tabs.Tab>
           <Tabs.Tab title={tabItems[2].title} key={tabItems[2].key}></Tabs.Tab>
         </Tabs>
