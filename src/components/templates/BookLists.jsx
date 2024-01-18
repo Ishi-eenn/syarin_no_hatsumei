@@ -1,7 +1,6 @@
 import { useRef, useState, useContext } from "react";
 import {
   FloatingBubble,
-  InfiniteScroll,
   List,
   Modal,
   SwipeAction,

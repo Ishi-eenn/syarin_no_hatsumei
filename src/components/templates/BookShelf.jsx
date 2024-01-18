@@ -267,7 +267,7 @@ export const BookShelf = (props) => {
         <div
           style={{
             width: "80%",
-            height: "50vh",
+            height: "20vh",
             margin: "auto",
             justifyContent: "center",
           }}

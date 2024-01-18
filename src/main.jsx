@@ -219,7 +219,7 @@ export const Main = () => {
     localStorage.setItem("bookData", JSON.stringify(DEFAULT_DATA));
     setBookData(DEFAULT_DATA);
   }
-  // console.log(bookData);
+
   return (
     <div style={{ height: "100vh" }}>
       <BookDataContext.Provider value={[bookData, setBookData]}>
