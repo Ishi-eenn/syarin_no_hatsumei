@@ -23,7 +23,7 @@ export const BookLists = () => {
 
   const [form] = Form.useForm();
   const headerName = null;
-  const formFields = [
+  const formFields1 = [
     {
       name: "title",
       label: "題名",
@@ -36,6 +36,13 @@ export const BookLists = () => {
     },
   ];
 
+  const formFields2 = [
+    {
+      name: "titleORisbn",
+      label: "題名もしくはISBN",
+      placeHolder: "ここに入力",
+    },
+  ];
   const tabItems = [
     { key: "book", title: "入力" },
     { key: "keyword", title: "キーワード検索" },
@@ -52,7 +59,6 @@ export const BookLists = () => {
     } else {
       newBookData[shelfIndex].books[stageIndex].splice(bookIndex, 1);
     }
-    localStorage.setItem("bookData", JSON.stringify(newBookData));
     setBookData(newBookData);
   };
 
@@ -62,7 +68,6 @@ export const BookLists = () => {
       //isbnは仮
       newBooks[0].books.push({ isbn: 12312, bookName: values.title });
       newBooks.sort();
-      localStorage.setItem("bookData", JSON.stringify(newBooks));
       setBookData(newBooks);
       form.resetFields();
     });
@@ -71,14 +76,14 @@ export const BookLists = () => {
   const barcodeSearchHandler = () => {
     Quagga.stop();
     myQuaggaRef.current.style.display = "none";
-  }
+  };
 
-
-  const clickHandler = () =>
+  const clickHandler = (props) =>
     Modal.confirm({
       cancelText: "取り消し",
-      confirmText: "追加",
+      confirmText: "本追加",
       closeOnMaskClick: true,
+      forceRender: true,
       content: (
         <Tabs onChange={(index) => setTabKey(index)}>
           <Tabs.Tab title={tabItems[0].title} key={tabItems[0].key}>
@@ -88,7 +93,7 @@ export const BookLists = () => {
             ></Card>
             <NormalForm
               form={form}
-              formFields={formFields}
+              formFields={formFields1}
               headerName={headerName}
             />
           </Tabs.Tab>
@@ -97,14 +102,15 @@ export const BookLists = () => {
             <Scanner
               stopHandler={barcodeSearchHandler}
               myQuaggaRef={myQuaggaRef}
-              setScannerBook={setScannerBook}/>
+              setScannerBook={setScannerBook}
+            />
           </Tabs.Tab>
         </Tabs>
       ),
       onConfirm: () => {
-        if(tabKey === 'book'){
+        if (tabKey === "book") {
           exactSearchHandler();
-        } else if(tabKey === 'keyword'){
+        } else if (tabKey === "keyword") {
           //完全一致検索の処理
         } else {
           barcodeSearchHandler();
@@ -156,7 +162,7 @@ export const BookLists = () => {
           "--initial-position-right": "30px",
           "--edge-distance": "50px",
         }}
-        onClick={clickHandler}
+        onClick={() => clickHandler()}
       >
         <AddCircleOutline fontSize={50} />
       </FloatingBubble>
