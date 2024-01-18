@@ -1,7 +1,7 @@
 import { useState, useContext } from "react";
 import { ListTabs } from "../templates/ListTabs";
-import { BookShelves } from "../templates/BookShelves";
 import { BookDataContext } from "../../main";
+import { BookShelf } from "../templates/BookShelf";
 
 export const Top = () => {
   const [activeTab, setActiveIndex] = useState(1);
@@ -30,7 +30,7 @@ export const Top = () => {
         shelves={shelves}
         shelvesChangeHandler={shelvesChangeHandler}
       />
-      <BookShelves activeTab={activeTab} shelves={shelves} />
+      <BookShelf activeTab={activeTab} shelveData={shelves[activeTab]} />
     </>
   );
 };

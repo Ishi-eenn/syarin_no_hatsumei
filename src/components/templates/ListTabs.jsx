@@ -1,7 +1,8 @@
-import { Button, Modal, Tabs, Form, Popup } from "antd-mobile";
+import { Button, Modal, Tabs, Form } from "antd-mobile";
 import { AddOutline } from "antd-mobile-icons";
 import { NormalForm } from "../parts/NormalForm";
 import { useState } from "react";
+import { NormalPopup } from "../parts/NormalPopup";
 
 export const ListTabs = (props) => {
   const { activeTab, activeChangeHandler, shelves, shelvesChangeHandler } =
@@ -72,7 +73,6 @@ export const ListTabs = (props) => {
     });
   };
 
-  // console.log(shelves);
 
 
   return (
@@ -113,24 +113,7 @@ export const ListTabs = (props) => {
       >
         <AddOutline />
       </Button>
-      <Popup
-        position='top'
-        bodyStyle={{
-          marginLeft:'5vw',
-          width: '90vw',
-          height:'10vh',
-          textAlign:"center",
-          fontWeight:'bold',
-          color:'red',
-          fontSize:16,
-          lineHeight:'10vh',
-          backgroundColor:'white',
-          borderRadius: 10
-        }}
-        visible={popVisible}
-        onMaskClick={() => setPopVisible(false)}>
-        フォーム内の全ての値を入力してください。
-      </Popup>
+      <NormalPopup popVisible={popVisible} setPopVisible={setPopVisible}/>
     </div>
   );
 };

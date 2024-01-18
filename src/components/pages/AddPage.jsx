@@ -1,33 +1,30 @@
 import {
   AutoCenter,
   Card,
-  Radio,
   Form,
   Input,
   Tabs,
   List,
   Button,
 } from "antd-mobile";
-import { NormalButton } from "../parts/NormalButton";
-import { NormalTag } from "../parts/NormalTag";
-import { useRef, useState, useEffect, useContext } from "react";
-import { cacheNames } from "workbox-core";
+import { useRef, useState, useContext } from "react";
 import { NormalForm } from "../parts/NormalForm";
 import Scanner from "../../features/Scanner";
-import { FormItem } from "antd-mobile/es/components/form/form-item";
 import { BookDataContext } from "../../main";
 import FetchData from "../../features/FetchData";
 import { ListItem } from "antd-mobile/es/components/list/list-item";
 import { useNavigate } from "react-router-dom";
 import Quagga from "quagga";
+import { NormalPopup } from "../parts/NormalPopup";
 
 export const AddPage = () => {
   const [bookData, setBookData] = useContext(BookDataContext);
   const [form] = Form.useForm();
   const headerName = null;
   const [fetchedData, setFetchedData] = useState("");
-  const [scannerBook, setScannerBook] = useState("");
+  const [scannerBook, setScannerBook] = useState("0000000000000");
   const navigate = useNavigate();
+  const [popVisible, setPopVisible] = useState(false);
 
   const myQuaggaRef = useRef(null);
   const formFields = [
@@ -35,11 +32,25 @@ export const AddPage = () => {
       name: "title",
       label: "題名",
       placeHolder: "ここに入力",
+      validateTrigger:['onChange'],
+      rules:[
+        {
+          required: true,
+          message: '名前を入力してください',
+        },
+      ]
     },
     {
       name: "width",
       label: "ページ数",
       placeHolder: "ここに入力",
+      validateTrigger:['onChange'],
+      rules:[
+        {
+          required: true,
+          message: '名前を入力してください',
+        },
+      ]
     },
   ];
 
@@ -69,10 +80,12 @@ export const AddPage = () => {
       setBookData(newBooks);
       form.resetFields();
       navigate("/list");
+    })
+    .catch((error) => {
+      setPopVisible(true);
     });
   };
 
-  console.log(fetchedData);
 
   const addBookDataBySelectedBookName = (index) => {
     const newBooks = [...bookData];
@@ -82,6 +95,7 @@ export const AddPage = () => {
     });
     newBooks.sort();
     setBookData(newBooks);
+    form.resetFields();
     navigate("/list");
   };
 
@@ -93,10 +107,9 @@ export const AddPage = () => {
     if (!isNaN(inputValue)) {
       inputValue = Number(inputValue);
     }
+
     const d = await FetchData(inputValue);
-    console.log(d);
     setFetchedData(d);
-    console.log(fetchedData);
   };
 
   const addScanneredBook = () => {
@@ -109,6 +122,7 @@ export const AddPage = () => {
     setBookData(newBooks);
     navigate("/list");
   };
+  
   return (
     <>
       <Tabs>
@@ -164,6 +178,7 @@ export const AddPage = () => {
           <Scanner myQuaggaRef={myQuaggaRef} setScannerBook={setScannerBook} />
         </Tabs.Tab>
       </Tabs>
+      <NormalPopup popVisible={popVisible} setPopVisible={setPopVisible} />
     </>
   );
 };
