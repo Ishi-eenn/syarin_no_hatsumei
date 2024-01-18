@@ -49,8 +49,6 @@ export const BookShelf = (props) => {
       )
   );
 
-  console.log(tier);
-
   const [selectBooks, setSelectBooks] = useState([]);
 
   const grid = 8;
@@ -60,7 +58,6 @@ export const BookShelf = (props) => {
     padding: grid,
     overflow: "hidden",
     display: "flex",
-    flexWrap: "wrap",
     width: "100%",
     height: "16.5vh",
     borderWidth: 3,
@@ -71,7 +68,7 @@ export const BookShelf = (props) => {
 
   const getItemStyle = (isDragging, draggableStyle, id) => ({
     userSelect: "none",
-    width: "10%",
+    width: "40px",
     margin: `0 0 ${grid} 0`,
     background: isDragging ? "white" : "aliceblue",
     writingMode: "vertical-rl",
@@ -142,7 +139,7 @@ export const BookShelf = (props) => {
       selectBooks.includes(item.id)
     );
 
-    if (!isDestinationStock) {
+    if (!isDestinationStock && tier[end].length !== 0) {
       let sourceSize;
       if (selectBooks.length !== 0) {
         sourceSize = selectBooks

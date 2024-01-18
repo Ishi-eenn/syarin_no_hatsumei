@@ -13,15 +13,28 @@ import {
 import { AddCircleOutline } from "antd-mobile-icons";
 import { NormalForm } from "../parts/NormalForm";
 import { BookDataContext } from "../../main.jsx";
+import FetchData from "../../features/FetchData";
+import { ListItem } from "antd-mobile/es/components/list/list-item";
 
-import Scanner from "../../features/Scanner.jsx";
+const PrintHandler = (Books) => {
+  if (Books || Books === null) console.log("Books is null");
+  else console.log(Books);
+  return (
+    <>
+      {!Books &&
+        Books.map((item, index) => {
+          <ListItem>{item.bookName}</ListItem>;
+        })}
+    </>
+  );
+};
 
 export const BookLists = () => {
   const [bookData, setBookData] = useContext(BookDataContext);
 
   const [form] = Form.useForm();
   const headerName = null;
-  const formFields = [
+  const formFields1 = [
     {
       name: "title",
       label: "題名",
@@ -34,6 +47,13 @@ export const BookLists = () => {
     },
   ];
 
+  const formFields2 = [
+    {
+      name: "titleORisbn",
+      label: "題名もしくはISBN",
+      placeHolder: "ここに入力",
+    },
+  ];
   const tabItems = [
     { key: "book", title: "入力" },
     { key: "keyword", title: "キーワード検索" },
@@ -50,7 +70,6 @@ export const BookLists = () => {
     } else {
       newBookData[shelfIndex].books[stageIndex].splice(bookIndex, 1);
     }
-    localStorage.setItem("bookData", JSON.stringify(newBookData));
     setBookData(newBookData);
   };
 
@@ -60,17 +79,30 @@ export const BookLists = () => {
       //isbnは仮
       newBooks[0].books.push({ isbn: 12312, bookName: values.title });
       newBooks.sort();
-      localStorage.setItem("bookData", JSON.stringify(newBooks));
       setBookData(newBooks);
       form.resetFields();
     });
   };
 
-  const clickHandler = () =>
+  const [a, setA] = useState("");
+  const [inputVal, setInputValue] = useState("");
+
+  //   const onepieceISBN = 9784088836447;
+  const handleGetFieldName = async (inputVal) => {
+    console.log(inputVal);
+    const d = await FetchData(inputVal);
+    console.log(d);
+    setA(d);
+  };
+
+  console.log(inputVal);
+
+  const clickHandler = (props) =>
     Modal.confirm({
       cancelText: "取り消し",
-      confirmText: "追加",
+      confirmText: "本追加",
       closeOnMaskClick: true,
+      forceRender: true,
       content: (
         <Tabs>
           <Tabs.Tab title={tabItems[0].title} key={tabItems[0].key}>
@@ -80,15 +112,35 @@ export const BookLists = () => {
             ></Card>
             <NormalForm
               form={form}
-              formFields={formFields}
+              formFields={formFields1}
               headerName={headerName}
             />
           </Tabs.Tab>
-          <Tabs.Tab title={tabItems[1].title} key={tabItems[1].key}></Tabs.Tab>
+          <Tabs.Tab title={tabItems[1].title} key={tabItems[1].key}>
+            <Card
+              title="本の検索"
+              bodyStyle={{ border: "solid 2px", background: "gray" }}
+            ></Card>
+
+            <div style={{ display: "flex", flexDirection: "row" }}>
+              <input
+                type="text"
+                onChange={(event) => {
+                  setInputValue(event.target.value);
+                  console.log(inputVal);
+                }}
+              />
+              <button onClick={() => handleGetFieldName(inputVal)}>検索</button>
+            </div>
+            <List>
+              <PrintHandler Books={a} />
+            </List>
+          </Tabs.Tab>
           <Tabs.Tab title={tabItems[2].title} key={tabItems[2].key}></Tabs.Tab>
         </Tabs>
       ),
       onConfirm: () => {
+        setInputValue("inputvalue");
         changeHandler();
       },
     });
@@ -137,7 +189,7 @@ export const BookLists = () => {
           "--initial-position-right": "30px",
           "--edge-distance": "50px",
         }}
-        onClick={clickHandler}
+        onClick={() => clickHandler({ inputVal, setInputValue })}
       >
         <AddCircleOutline fontSize={50} />
       </FloatingBubble>
