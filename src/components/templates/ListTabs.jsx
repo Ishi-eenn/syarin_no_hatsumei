@@ -72,7 +72,7 @@ export const ListTabs = (props) => {
     });
   };
 
-  console.log(shelves);
+  // console.log(shelves);
 
 
   return (

@@ -213,14 +213,14 @@ export const Main = () => {
     },
   ];
 
-  //localStorage.clear();
+  // localStorage.clear();
   const localBookData = JSON.parse(localStorage.getItem("bookData"));
   const [bookData, setBookData] = React.useState(localBookData);
   if (bookData === null) {
     localStorage.setItem("bookData", JSON.stringify(DEFAULT_DATA));
     setBookData(DEFAULT_DATA);
   }
-  console.log(bookData);
+
   return (
     <div style={{ height: "100vh" }}>
       <BookDataContext.Provider value={[bookData, setBookData]}>

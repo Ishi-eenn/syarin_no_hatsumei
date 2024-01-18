@@ -1,7 +1,6 @@
 import { useRef, useState, useContext, useEffect } from "react";
 import {
   FloatingBubble,
-  InfiniteScroll,
   List,
   Modal,
   SwipeAction,
@@ -133,7 +132,6 @@ export const BookLists = () => {
           </div>
         ))}
       </List>
-      <InfiniteScroll />
       <FloatingBubble
         style={{
           "--initial-position-bottom": "100px",

@@ -20,6 +20,11 @@ export const BookShelf = (props) => {
   //   ],
   //   [],
   // ]);
+  const bufBookData = [...bookData];
+  const [test, ...rest] = bufBookData;
+  // console.log(`test ${test.title}`);
+  // rest.map((item) => console.log(`rest ${item.title}`));
+  // console.log(bookData);
 
   const targetShelfId = "2"; // 対象の本棚のid
 
@@ -37,6 +42,8 @@ export const BookShelf = (props) => {
       )
   );
 
+  // console.log(tier);
+
   const [stockBooks, setStockBooks] = useState(
     bookData
       .filter((shelf) => shelf.title === "ストック")
@@ -49,18 +56,17 @@ export const BookShelf = (props) => {
       )
   );
 
-  console.log(tier);
-
   const [selectBooks, setSelectBooks] = useState([]);
+
+  // console.log(selectBooks);
 
   const grid = 8;
 
   const getListStyle = (isDraggingOver) => ({
     background: isDraggingOver ? "sandybrown" : "peru",
     padding: grid,
-    overflow: "hidden",
-    display: "flex",
-    flexWrap: "wrap",
+    overflow: "scroll",
+    whiteSpace: 'nowrap',
     width: "100%",
     height: "16.5vh",
     borderWidth: 3,
@@ -71,7 +77,9 @@ export const BookShelf = (props) => {
 
   const getItemStyle = (isDragging, draggableStyle, id) => ({
     userSelect: "none",
-    width: "10%",
+    display: 'inline-block',
+    height:'95%',
+    width: "40px",
     margin: `0 0 ${grid} 0`,
     background: isDragging ? "white" : "aliceblue",
     writingMode: "vertical-rl",
@@ -142,7 +150,7 @@ export const BookShelf = (props) => {
       selectBooks.includes(item.id)
     );
 
-    if (!isDestinationStock) {
+    if (!isDestinationStock && tier[end].length !== 0) {
       let sourceSize;
       if (selectBooks.length !== 0) {
         sourceSize = selectBooks
@@ -259,7 +267,7 @@ export const BookShelf = (props) => {
         <div
           style={{
             width: "80%",
-            height: "50vh",
+            height: "20vh",
             margin: "auto",
             justifyContent: "center",
           }}
