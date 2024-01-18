@@ -20,6 +20,11 @@ export const BookShelf = (props) => {
   //   ],
   //   [],
   // ]);
+  const bufBookData = [...bookData];
+  const [test, ...rest] = bufBookData;
+  // console.log(`test ${test.title}`);
+  // rest.map((item) => console.log(`rest ${item.title}`));
+  // console.log(bookData);
 
   const targetShelfId = "2"; // 対象の本棚のid
 
@@ -37,6 +42,8 @@ export const BookShelf = (props) => {
       )
   );
 
+  // console.log(tier);
+
   const [stockBooks, setStockBooks] = useState(
     bookData
       .filter((shelf) => shelf.title === "ストック")
@@ -49,9 +56,11 @@ export const BookShelf = (props) => {
       )
   );
 
-  console.log(tier);
+  // console.log(stockBooks);
 
   const [selectBooks, setSelectBooks] = useState([]);
+
+  // console.log(selectBooks);
 
   const grid = 8;
 

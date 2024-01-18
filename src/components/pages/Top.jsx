@@ -1,24 +1,15 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { ListTabs } from "../templates/ListTabs";
 import { BookShelves } from "../templates/BookShelves";
+import { BookDataContext } from "../../main";
 
 export const Top = () => {
   const [activeTab, setActiveIndex] = useState(1);
+  const [bookData] = useContext(BookDataContext);
+  const tmp = [...bookData];
+  const [stock, ...bookshelf] = tmp;
 
-  const [shelves, setShelves] = useState([
-    {
-        title: '本棚1',
-        id: '1',
-        w: '50',
-        books: [[], []]
-    },
-    {
-        title: '本棚2',
-        id: '2',
-        w: '70',
-        books: [[], [], []]
-    }
-  ])
+  const [shelves, setShelves] = useState([...bookshelf]);
 
 
   const activeChangeHandler = (index) => {
@@ -26,6 +17,8 @@ export const Top = () => {
   };
 
   const shelvesChangeHandler = (newShelves) => {
+    const newBookData = [stock, ...newShelves];
+    localStorage.setItem("bookData", JSON.stringify(newBookData));
     setShelves(newShelves);
   };
 
