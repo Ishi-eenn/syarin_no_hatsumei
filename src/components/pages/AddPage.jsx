@@ -32,25 +32,25 @@ export const AddPage = () => {
       name: "title",
       label: "題名",
       placeHolder: "ここに入力",
-      validateTrigger:['onChange'],
-      rules:[
-        {
-          required: true,
-          message: '名前を入力してください',
-        },
-      ]
+      // validateTrigger:['onChange'],
+      // rules:[
+      //   {
+      //     required: true,
+      //     message: '名前を入力してください',
+      //   },
+      // ]
     },
     {
       name: "width",
       label: "ページ数",
       placeHolder: "ここに入力",
-      validateTrigger:['onChange'],
-      rules:[
-        {
-          required: true,
-          message: '名前を入力してください',
-        },
-      ]
+      // validateTrigger:['onChange'],
+      // rules:[
+      //   {
+      //     required: true,
+      //     message: '名前を入力してください',
+      //   },
+      // ]
     },
   ];
 
@@ -178,7 +178,7 @@ export const AddPage = () => {
           <Scanner myQuaggaRef={myQuaggaRef} setScannerBook={setScannerBook} />
         </Tabs.Tab>
       </Tabs>
-      <NormalPopup popVisible={popVisible} setPopVisible={setPopVisible} />
+      {/* <NormalPopup popVisible={popVisible} setPopVisible={setPopVisible} /> */}
     </>
   );
 };

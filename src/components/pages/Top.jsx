@@ -61,6 +61,7 @@ export const Top = () => {
         activeTab={activeTab}
         shelveData={shelves[activeTab]}
         tier={tier}
+        setTier={setTier}
         />
     </>
   );

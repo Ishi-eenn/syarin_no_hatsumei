@@ -4,7 +4,7 @@ import { useState, useContext } from "react";
 import { BookDataContext } from "../../main";
 
 export const BookShelf = (props) => {
-  const { activeTab, tier, shelfData } = props;
+  const { activeTab, tier, setTier, shelfData } = props;
   const [bookData, setBookData] = useContext(BookDataContext);
 
 
@@ -135,7 +135,7 @@ export const BookShelf = (props) => {
       }
 
       const shelfWidth = parseInt(
-        bookData.filter((shelf) => shelf.id === targetShelfId)[0].w
+        bookData.filter((shelf) => shelf.id === activeTab).w
       );
 
       const totalSize =
