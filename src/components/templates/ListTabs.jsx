@@ -63,7 +63,7 @@ export const ListTabs = (props) => {
 
       newShelves.push({
         title: values.title,
-        id: String(Object.keys(shelves).length),
+        id: String(Object.keys(shelves).length+1),
         w: values.w,
         books: newBooksArray
       });

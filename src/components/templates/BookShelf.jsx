@@ -4,45 +4,9 @@ import { useState, useContext } from "react";
 import { BookDataContext } from "../../main";
 
 export const BookShelf = (props) => {
-  const { shelfData } = props;
+  const { activeTab, tier, shelfData } = props;
   const [bookData, setBookData] = useContext(BookDataContext);
 
-  // const [tier, setTier] = useState([
-  //   [
-  //     { id: "1-1", content: "進撃の巨人 1" },
-  //     { id: "1-2", content: "進撃の巨人 2" },
-  //     { id: "1-3", content: "進撃の巨人 3" },
-  //   ],
-  //   [
-  //     { id: "2-1", content: "ワンピース 1" },
-  //     { id: "2-2", content: "ワンピース 2" },
-  //     { id: "2-3", content: "ワンピース 3" },
-  //   ],
-  //   [],
-  // ]);
-  const bufBookData = [...bookData];
-  const [test, ...rest] = bufBookData;
-  // console.log(`test ${test.title}`);
-  // rest.map((item) => console.log(`rest ${item.title}`));
-  // console.log(bookData);
-
-  const targetShelfId = "1"; // 対象の本棚のid
-
-  const [tier, setTier] = useState(
-    bookData
-      .filter((shelf) => shelf.id === targetShelfId)
-      .flatMap((shelf) =>
-        shelf.books.map((booksArray, i) =>
-          booksArray.map((book, index) => ({
-            id: `${i + 1}-${index + 1}`,
-            content: book.bookName,
-            bookSize: book.bookSize,
-          }))
-        )
-      )
-  );
-
-  // console.log(tier);
 
   const [stockBooks, setStockBooks] = useState(
     bookData
@@ -58,7 +22,6 @@ export const BookShelf = (props) => {
 
   const [selectBooks, setSelectBooks] = useState([]);
 
-  // console.log(selectBooks);
 
   const grid = 8;
 

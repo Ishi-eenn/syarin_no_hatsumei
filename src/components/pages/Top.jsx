@@ -11,9 +11,36 @@ export const Top = () => {
 
   const [shelves, setShelves] = useState([...bookshelf]);
 
+  const [tier, setTier] = useState(
+    bookData
+      .filter((shelf) => shelf.id === '1')
+      .flatMap((shelf) =>
+        shelf.books.map((booksArray, i) =>
+          booksArray.map((book, index) => ({
+            id: `${i + 1}-${index + 1}`,
+            content: book.bookName,
+            bookSize: book.bookSize,
+          }))
+        )
+      )
+  );
+
+
 
   const activeChangeHandler = (index) => {
     setActiveIndex(index);
+    const tierId = index+1;
+    setTier(bookData
+    .filter((shelf) => shelf.id === String(tierId))
+    .flatMap((shelf) =>
+      shelf.books.map((booksArray, i) =>
+        booksArray.map((book, index) => ({
+          id: `${i + 1}-${index + 1}`,
+          content: book.bookName,
+          bookSize: book.bookSize,
+        }))
+      )
+    ));
   };
 
   const shelvesChangeHandler = (newShelves) => {
@@ -30,7 +57,11 @@ export const Top = () => {
         shelves={shelves}
         shelvesChangeHandler={shelvesChangeHandler}
       />
-      <BookShelf activeTab={activeTab} shelveData={shelves[activeTab]} />
+      <BookShelf
+        activeTab={activeTab}
+        shelveData={shelves[activeTab]}
+        tier={tier}
+        />
     </>
   );
 };
