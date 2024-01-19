@@ -22,7 +22,7 @@ export const AddPage = () => {
   const [form] = Form.useForm();
   const headerName = null;
   const [fetchedData, setFetchedData] = useState("");
-  const [scannerBook, setScannerBook] = useState("0000000000000");
+  const [scannerBook, setScannerBook] = useState("");
   const navigate = useNavigate();
   const [popVisible, setPopVisible] = useState(false);
 

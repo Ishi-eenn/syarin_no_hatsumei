@@ -26,7 +26,7 @@ export const BookShelf = (props) => {
   // rest.map((item) => console.log(`rest ${item.title}`));
   // console.log(bookData);
 
-  const targetShelfId = "2"; // 対象の本棚のid
+  const targetShelfId = "1"; // 対象の本棚のid
 
   const [tier, setTier] = useState(
     bookData
