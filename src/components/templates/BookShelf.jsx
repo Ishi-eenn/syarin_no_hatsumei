@@ -135,7 +135,7 @@ export const BookShelf = (props) => {
       }
 
       const shelfWidth = parseInt(
-        bookData.filter((shelf) => shelf.id === activeTab).w
+        bookData.filter((shelf) => shelf.id === String(activeTab))[0].w,
       );
 
       const totalSize =
