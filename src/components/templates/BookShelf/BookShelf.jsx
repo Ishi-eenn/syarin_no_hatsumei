@@ -256,8 +256,8 @@ export const BookShelf = (props) => {
 
 		// console.log(turaiyo);
 
-		console.log(bookData[0].books);
-		bookData[0].books = turasugi;
+		// console.log(bookData[0].books);
+		// bookData[0].books = turasugi;
 		// bookData[0].books = killTier();
 		// const newStockBooks = [...killTier()];
 		// bookData[0].books = newStockBooks;
