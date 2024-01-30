@@ -6,6 +6,8 @@ export const styles = {
     borderWidth: 3,
     borderColor: "brown",
     borderStyle: "solid",
+    maxHeight: "50vh",
+    overflow: "scroll",
   },
   stock: {
     width: "80%",
