@@ -1,15 +1,11 @@
 import { useState, useContext } from "react";
 import { ListTabs } from "../templates/ListTabs";
 import { BookDataContext } from "../../main";
-import { BookShelf } from "../templates/BookShelf";
+import { BookShelf } from "../templates/BookShelf/BookShelf";
 
 export const Top = () => {
   const [activeTab, setActiveIndex] = useState(1);
   const [bookData] = useContext(BookDataContext);
-  const tmp = [...bookData];
-  const [stock, ...bookshelf] = tmp;
-
-  const [shelves, setShelves] = useState([...bookshelf]);
 
   const [tier, setTier] = useState(
     bookData
@@ -25,13 +21,10 @@ export const Top = () => {
       )
   );
 
-
-
-  const activeChangeHandler = (index) => {
-    setActiveIndex(index);
-    const tierId = index+1;
+  const activeChangeHandler = (id) => {
+    setActiveIndex(Number(id));
     setTier(bookData
-    .filter((shelf) => shelf.id === String(tierId))
+    .filter((shelf) => shelf.id === id)
     .flatMap((shelf) =>
       shelf.books.map((booksArray, i) =>
         booksArray.map((book, index) => ({
@@ -43,23 +36,14 @@ export const Top = () => {
     ));
   };
 
-  const shelvesChangeHandler = (newShelves) => {
-    const newBookData = [stock, ...newShelves];
-    localStorage.setItem("bookData", JSON.stringify(newBookData));
-    setShelves(newShelves);
-  };
-
   return (
     <>
       <ListTabs
         activeTab={activeTab}
         activeChangeHandler={activeChangeHandler}
-        shelves={shelves}
-        shelvesChangeHandler={shelvesChangeHandler}
       />
       <BookShelf
         activeTab={activeTab}
-        shelveData={shelves[activeTab]}
         tier={tier}
         setTier={setTier}
         />

@@ -1,14 +1,11 @@
 import {
   AutoCenter,
-  Card,
   Form,
-  Input,
   Tabs,
   List,
   Button,
 } from "antd-mobile";
 import { useRef, useState, useContext, useEffect } from "react";
-import { NormalForm } from "../parts/NormalForm";
 import Scanner from "../../features/Scanner";
 import { BookDataContext } from "../../main";
 import FetchData from "../../features/FetchData";
@@ -16,49 +13,20 @@ import { ListItem } from "antd-mobile/es/components/list/list-item";
 import { useNavigate } from "react-router-dom";
 import Quagga from "quagga";
 import { NormalPopup } from "../parts/NormalPopup";
+import { AddCardForm } from "../templates/AddCardForm";
+import { formFields } from "../../constants/AddPage/Forms";
+import { tabItems } from "../../constants/AddPage/Tab";
+import { keywordFormFields } from "../../constants/AddPage/Forms";
 
 export const AddPage = () => {
   const [bookData, setBookData] = useContext(BookDataContext);
-  const [form] = Form.useForm();
-  const headerName = null;
+  const [manualForm] = Form.useForm();
+  const [keywordForm] = Form.useForm();
   const [fetchedData, setFetchedData] = useState("");
   const [scannerBook, setScannerBook] = useState("");
-  const navigate = useNavigate();
   const [popVisible, setPopVisible] = useState(false);
-
   const myQuaggaRef = useRef(null);
-  const formFields = [
-    {
-      name: "title",
-      label: "題名",
-      placeHolder: "ここに入力",
-      // validateTrigger:['onChange'],
-      // rules:[
-      //   {
-      //     required: true,
-      //     message: '名前を入力してください',
-      //   },
-      // ]
-    },
-    {
-      name: "width",
-      label: "ページ数",
-      placeHolder: "ここに入力",
-      // validateTrigger:['onChange'],
-      // rules:[
-      //   {
-      //     required: true,
-      //     message: '名前を入力してください',
-      //   },
-      // ]
-    },
-  ];
-
-  const tabItems = [
-    { key: "book", title: "入力" },
-    { key: "keyword", title: "キーワード検索" },
-    { key: "barcode", title: "バーコード" },
-  ];
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (scannerBook !== "") {
@@ -69,7 +37,7 @@ export const AddPage = () => {
   }, [scannerBook]);
 
   const changeHandler = () => {
-    form.validateFields().then((values) => {
+    manualForm.validateFields().then((values) => {
       const newBooks = [...bookData];
       //isbnは仮
       newBooks[0].books.push({
@@ -78,7 +46,7 @@ export const AddPage = () => {
       });
       newBooks.sort();
       setBookData(newBooks);
-      form.resetFields();
+      manualForm.resetFields();
       navigate("/list");
     })
     .catch((error) => {
@@ -95,21 +63,24 @@ export const AddPage = () => {
     });
     newBooks.sort();
     setBookData(newBooks);
-    form.resetFields();
+    manualForm.resetFields();
     navigate("/list");
   };
 
-  //   const onepieceISBN = 9784088836447;
   const handleGetFieldName = async () => {
-    const values = await form.validateFields();
-    let inputValue = values.inputFieldName;
-    // inputValueが数値の場合、シングルクォーテーションを外す
-    if (!isNaN(inputValue)) {
-      inputValue = Number(inputValue);
-    }
+    keywordForm.validateFields().then(async(values) => {
+      let inputValue = values.keyword;
+      // inputValueが数値の場合、シングルクォーテーションを外す
+      if (!isNaN(inputValue)) {
+        inputValue = Number(inputValue);
+      }
 
-    const d = await FetchData(inputValue);
-    setFetchedData(d);
+      const d = await FetchData(inputValue);
+      setFetchedData(d);
+    })
+    .catch((error) => {
+      setPopVisible(true);
+    });
   };
 
   const addScanneredBook = () => {
@@ -122,37 +93,43 @@ export const AddPage = () => {
     setBookData(newBooks);
     navigate("/list");
   };
+
+  // formのprops
+  const headerName = null;
+
+  const manualFormProps = {
+    cardTitle: "本の追加",
+    formProps :{
+      form: manualForm,
+      formFields: formFields,
+      headerName: headerName,
+    }
+  }
+
+  const keywordFormProps = {
+    cardTitle:"本の検索",
+    formProps: {
+      form: keywordForm,
+      formFields: [{
+        ...keywordFormFields,
+        extra: <a onClick={handleGetFieldName}>検索</a>
+      }],
+      headerName: headerName,
+    }
+  }
   
   return (
     <>
       <Tabs>
         <Tabs.Tab title={tabItems[0].title} key={tabItems[0].key}>
-          <Card
-            title="本の追加"
-            bodyStyle={{ border: "solid 2px", background: "gray" }}
-          ></Card>
-          <NormalForm
-            form={form}
-            formFields={formFields}
-            headerName={headerName}
-          />
+          <AddCardForm {...manualFormProps} />
           <AutoCenter>
             <Button onClick={changeHandler}>追加</Button>
           </AutoCenter>
         </Tabs.Tab>
+        
         <Tabs.Tab title={tabItems[1].title} key={tabItems[1].key}>
-          <Card
-            title="本の検索"
-            bodyStyle={{ border: "solid 2px", background: "gray" }}
-          ></Card>
-          <Form form={form}>
-            <Form.Item
-              name="inputFieldName"
-              extra={<a onClick={handleGetFieldName}>検索</a>}
-            >
-              <Input placeholder="キーワードまたはisbnを入力" />
-            </Form.Item>
-          </Form>
+          <AddCardForm {...keywordFormProps} />
           <List>
             <>
               {fetchedData.length !== 0 &&
@@ -178,7 +155,7 @@ export const AddPage = () => {
           <Scanner myQuaggaRef={myQuaggaRef} setScannerBook={setScannerBook} />
         </Tabs.Tab>
       </Tabs>
-      {/* <NormalPopup popVisible={popVisible} setPopVisible={setPopVisible} /> */}
+      <NormalPopup popVisible={popVisible} setPopVisible={setPopVisible} />
     </>
   );
 };
