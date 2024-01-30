@@ -171,10 +171,9 @@ export const BookShelf = (props) => {
 	};
 
 	const onSave = () => {
-		// console.log(stockBooks);
 		const newBook = (name) => {
 			const aaa = bookData.filter((shelf) => shelf.title === "ストック");
-			const bbb = aaa[0].books.map((book) => book);
+			const bbb = aaa[0]?.books || [];
 			const ccc = bbb.map((item) => {
 				if (item.bookName === name) {
 					return {
@@ -188,30 +187,28 @@ export const BookShelf = (props) => {
 			});
 
 			const ddd = ccc.filter((item) => item !== null);
-			const eee = {
-				isbn: ddd[0].isbn,
-				bookName: ddd[0].bookName,
-				bookSize: ddd[0].bookSize,
-				id: ddd[0].id,
-			};
+			const eee =
+				ddd.length > 0
+					? {
+							isbn: ddd[0].isbn,
+							bookName: ddd[0].bookName,
+							bookSize: ddd[0].bookSize,
+							id: ddd[0].id,
+					  }
+					: {};
 			return eee;
 		};
-
-		// console.log(stockBooks);
-		// stockBooks.map((item) => {
-		// 	if (item.content === "中間管理録トネガワ") {
-		// 		console.log("しね");
-		// 	} else console.log("生きろ");
-		// });
 
 		const yurusanaiyoooo = tier.flatMap((item) => item);
 		// console.log(yurusanaiyoooo);
 
 		const killBook = (name) => {
 			let cnt = -1;
-			for (let i = 0; i < yurusanaiyoooo.length; i++) {
-				if (stockBooks[i].content === name) {
+			for (let i = 0; i < stockBooks.length; i++) {
+				if (stockBooks[i]?.content === name) {
+					// ?. を使って undefined チェック
 					cnt = i;
+					break; // 見つかったらループを終了
 				}
 			}
 			if (cnt === -1) {
@@ -244,25 +241,9 @@ export const BookShelf = (props) => {
 			turasugi.push(newBook(item.content));
 			// newBook(item.content);
 		});
-		console.log(turasugi);
+		// console.log(turasugi);
 
-		// console.log(newBook(turakunaiyo[0].content));
-		// const turaiyo = [];
-		// turakunaiyo.map((item) => {
-		// 	item.map((book) => {
-		// 		turaiyo.push(newBook(book.content));
-		// 	});
-		// });
-
-		// console.log(turaiyo);
-
-		// console.log(bookData[0].books);
-		// bookData[0].books = turasugi;
-		// bookData[0].books = killTier();
-		// const newStockBooks = [...killTier()];
-		// bookData[0].books = newStockBooks;
-		// console.log(bookData[0].books);
-		// bookData[0].books = killTier();
+		bookData[0].books = turasugi;
 		bookData[activeTab].books = yurusanaiyo;
 		setBookData(bookData);
 		localStorage.setItem("bookData", JSON.stringify(bookData));
