@@ -1,60 +1,25 @@
 import { Button, Modal, Tabs, Form } from "antd-mobile";
 import { AddOutline } from "antd-mobile-icons";
 import { NormalForm } from "../parts/NormalForm";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { NormalPopup } from "../parts/NormalPopup";
+import { formFields } from "../../constants/TopPage/Form";
+import { BookDataContext } from "../../main";
 
 export const ListTabs = (props) => {
-  const { activeTab, activeChangeHandler, shelves, shelvesChangeHandler } =
-    props;
+  const { activeTab, activeChangeHandler } = props;
+
+  const [bookData, setBookData] = useContext(BookDataContext);
+
+  const stock = bookData[0];
+  const shelves = bookData.slice(1);
+
 
   const [form] = Form.useForm();
   const [popVisible, setPopVisible] = useState(false);
 
   const headerName = "本棚追加";
-  const formFields = [
-    {
-      name: "title",
-      label: "本棚の名前",
-      placeHolder: "",
-      validateTrigger:['onChange'],
-      rules:[
-        {
-          required: true,
-          message: '名前を入力してください',
-        },
-      ]
-    },
-    {
-      name: "w",
-      label: "横(cm)",
-      placeHolder: "10",
-      validateTrigger:['onChange'],
-      rules:[
-        {
-          required: true,
-          message: '横幅を入力してください',
-        },
-      ]
-    },
-    {
-      name: "boards",
-      label: "板の枚数(枚)",
-      placeHolder: "2",
-      validateTrigger:['onChange'],
-      rules:[
-        {
-          required: true,
-          message: '板を入力してください',
-        },
-      ]
-    },
-  ];
 
-  const activeChange = (key) => {
-    const index = shelves.findIndex((item) => item.title === key);
-    activeChangeHandler(index);
-  };
 
   const changeHandler = () => {
     form.validateFields().then((values) => {
@@ -68,7 +33,10 @@ export const ListTabs = (props) => {
         books: newBooksArray
       });
 
-      shelvesChangeHandler(newShelves);
+      const newBookData = [stock].concat(newShelves);
+
+      localStorage.setItem("bookData", JSON.stringify(newBookData));
+      setBookData(newBookData);
       form.resetFields();
     });
   };
@@ -80,10 +48,10 @@ export const ListTabs = (props) => {
       <Tabs
         defaultActiveKey={activeTab}
         style={{ flex: 1 }}
-        onChange={activeChange}
+        onChange={(id) => activeChangeHandler(id)}
       >
         {shelves.map((item) => (
-          <Tabs.Tab title={item.title} key={item.title} />
+          <Tabs.Tab title={item.title} key={item.id} />
         ))}
       </Tabs>
       <Button
