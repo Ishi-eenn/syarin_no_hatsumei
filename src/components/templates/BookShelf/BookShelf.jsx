@@ -6,6 +6,8 @@ import { styles, getListStyle, getItemStyle } from "./styles";
 import { NormalButton } from "../../parts/NormalButton";
 import { AutoCenter } from "antd-mobile";
 
+import { useNavigate } from "react-router-dom";
+
 export const BookShelf = (props) => {
 	const { activeTab, tier, setTier } = props;
 	const [bookData, setBookData] = useContext(BookDataContext);
@@ -16,7 +18,9 @@ export const BookShelf = (props) => {
 			.flatMap((stock) =>
 				stock.books.map((book, index) => ({
 					id: `0-${index}`,
+					isbn: book.isbn,
 					content: book.bookName,
+					bookName: book.bookName,
 					bookSize: book.bookSize,
 				})),
 			),
@@ -171,82 +175,13 @@ export const BookShelf = (props) => {
 	};
 
 	const onSave = () => {
-		const newBook = (name) => {
-			const aaa = bookData.filter((shelf) => shelf.title === "ストック");
-			const bbb = aaa[0]?.books || [];
-			const ccc = bbb.map((item) => {
-				if (item.bookName === name) {
-					return {
-						isbn: item.isbn,
-						bookName: item.bookName,
-						bookSize: item.bookSize,
-						id: item.id,
-					};
-				}
-				return null;
-			});
+		const NewBookData = [...bookData];
+		NewBookData[0].books = stockBooks;
+		NewBookData[activeTab].books = tier;
 
-			const ddd = ccc.filter((item) => item !== null);
-			const eee =
-				ddd.length > 0
-					? {
-							isbn: ddd[0].isbn,
-							bookName: ddd[0].bookName,
-							bookSize: ddd[0].bookSize,
-							id: ddd[0].id,
-					  }
-					: {};
-			return eee;
-		};
-
-		const yurusanaiyoooo = tier.flatMap((item) => item);
-		// console.log(yurusanaiyoooo);
-
-		const killBook = (name) => {
-			let cnt = -1;
-			for (let i = 0; i < stockBooks.length; i++) {
-				if (stockBooks[i]?.content === name) {
-					// ?. を使って undefined チェック
-					cnt = i;
-					break; // 見つかったらループを終了
-				}
-			}
-			if (cnt === -1) {
-				return stockBooks;
-			} else {
-				return [...stockBooks.slice(0, cnt), ...stockBooks.slice(cnt + 1)];
-			}
-		};
-
-		const killTier = () => {
-			let killedData = stockBooks;
-			tier.map((item) => {
-				killedData = killBook(item.content);
-			});
-			return killedData;
-		};
-
-		const yurusanaiyo = [];
-		tier.map((item) => {
-			const yurusanaiyooo = [];
-			item.map((book) => {
-				yurusanaiyooo.push(newBook(book.content));
-			});
-			yurusanaiyo.push(yurusanaiyooo);
-		});
-
-		const turakunaiyo = killTier();
-		const turasugi = [];
-		turakunaiyo.map((item) => {
-			turasugi.push(newBook(item.content));
-			// newBook(item.content);
-		});
-		// console.log(turasugi);
-
-		bookData[0].books = turasugi;
-		bookData[activeTab].books = yurusanaiyo;
-		setBookData(bookData);
-		localStorage.setItem("bookData", JSON.stringify(bookData));
+		setBookData(NewBookData);
+		setTier(tier);
+		localStorage.setItem("bookData", JSON.stringify(NewBookData));
 	};
 
 	return (

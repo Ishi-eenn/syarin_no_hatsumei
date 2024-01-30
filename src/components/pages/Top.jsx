@@ -14,7 +14,9 @@ export const Top = () => {
 				shelf.books.map((booksArray, i) =>
 					booksArray.map((book, index) => ({
 						id: `${i + 1}-${index + 1}`,
+						isbn: book.isbn,
 						content: book.bookName,
+						bookName: book.bookName,
 						bookSize: book.bookSize,
 					})),
 				),
@@ -22,12 +24,14 @@ export const Top = () => {
 	);
 
 	const activeChangeHandler = (id) => {
-		const filteredData = bookData.filter((shelf) => shelf.id === id);
+		const localBookData = JSON.parse(localStorage.getItem("bookData"));
+		const filteredData = localBookData.filter((shelf) => shelf.id === id);
 		const newTier = filteredData.flatMap((shelf) =>
 			shelf.books.map((booksArray, i) =>
 				booksArray.map((book, index) => ({
 					id: `${i + 1}-${index + 1}`,
 					content: book.bookName,
+					bookName: book.bookName,
 					bookSize: book.bookSize,
 				})),
 			),
@@ -36,6 +40,21 @@ export const Top = () => {
 		setActiveIndex(Number(id));
 		setTier(newTier);
 	};
+	// const activeChangeHandler = (id) => {
+	// 	const filteredData = bookData.filter((shelf) => shelf.id === id);
+	// 	const newTier = filteredData.flatMap((shelf) =>
+	// 		shelf.books.map((booksArray, i) =>
+	// 			booksArray.map((book, index) => ({
+	// 				id: `${i + 1}-${index + 1}`,
+	// 				content: book.bookName,
+	// 				bookSize: book.bookSize,
+	// 			})),
+	// 		),
+	// 	);
+
+	// 	setActiveIndex(Number(id));
+	// 	setTier(newTier);
+	// };
 
 	return (
 		<>
