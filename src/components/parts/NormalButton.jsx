@@ -3,7 +3,7 @@ import React from 'react'
 
 export const NormalButton = (props) => {
   return (
-    <Button {...props.style} >
+    <Button {...props} >
     {props.text}
     </Button>
     )

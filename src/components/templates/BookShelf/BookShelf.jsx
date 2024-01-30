@@ -3,6 +3,8 @@ import { Droppable, Draggable, DragDropContext } from "react-beautiful-dnd";
 import { useState, useContext } from "react";
 import { BookDataContext } from "../../../main";
 import { styles, getListStyle, getItemStyle } from "./styles";
+import { NormalButton } from "../../parts/NormalButton";
+import { AutoCenter } from "antd-mobile";
 
 
 export const BookShelf = (props) => {
@@ -171,6 +173,49 @@ export const BookShelf = (props) => {
     setSelectBooks([]);
   };
 
+
+  const onSave = () => {
+
+    const newBookData = bookData.map((shelf) => {
+      if (shelf.id === String(activeTab)) {
+        shelf.books = tier
+          .flat()
+          .concat(stockBooks)
+          .map((book) => {
+            return {
+              bookName: book.content,
+              bookSize: book.bookSize,
+            };
+          });
+      }
+      return shelf;
+    });
+
+    console.log(tier[0]);
+    console.log(tier)
+
+    const newStock = {
+      title: 'ストック',
+      books: stockBooks,
+    }
+    const newTier = {
+      books: [ti],
+      ...bookData.filter((shelf) => shelf.id === String(activeTab))[0]
+    }
+    
+
+
+    console.log(newTier);
+
+    const newData = {
+      ...bookData, 0:newStock, [activeTab]:newTier
+    }
+    console.log(newData);
+
+    // localStorage.setItem("bookData", JSON.stringify(newBookData));
+    // setBookData(newBookData);
+  }
+
   return (
     <div style={{ width: "100%", height: "65vh", marginTop: "5vh" }}>
       <DragDropContext onDragEnd={onDragEnd}>
@@ -220,6 +265,9 @@ export const BookShelf = (props) => {
           </Droppable>
         </div>
       </DragDropContext>
+      <AutoCenter>
+        <NormalButton text='保存' onClick={onSave} />
+      </AutoCenter>
     </div>
   );
 };

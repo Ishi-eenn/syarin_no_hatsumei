@@ -22,10 +22,9 @@ export const Top = () => {
   );
 
   const activeChangeHandler = (id) => {
-    setActiveIndex(Number(id));
-    setTier(bookData
-    .filter((shelf) => shelf.id === id)
-    .flatMap((shelf) =>
+
+    const filteredData = bookData.filter((shelf) => shelf.id === id);
+    const newTier = filteredData.flatMap((shelf) =>
       shelf.books.map((booksArray, i) =>
         booksArray.map((book, index) => ({
           id: `${i + 1}-${index + 1}`,
@@ -33,7 +32,10 @@ export const Top = () => {
           bookSize: book.bookSize,
         }))
       )
-    ));
+    );
+
+    setActiveIndex(Number(id));
+    setTier(newTier);
   };
 
   return (
